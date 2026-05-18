@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
-const PLAYLIST_ID = 'PLg1ZRqch8VjNlu0KLPI58iANTLvuoFcvz';
+const PLAYLIST_ID = 'PLg1ZRqch8VjMwPQ9NRigFX7DUlXi9aqHJ';
 const PLAYLIST_URL = `https://www.youtube.com/playlist?list=${PLAYLIST_ID}`;
 
 function usePlaylistVideos() {

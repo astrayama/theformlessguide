@@ -1,59 +1,46 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
-// Static video data from the Formless Moments playlist
-// These are representative videos from the channel; thumbnails via YouTube's image CDN
 const PLAYLIST_ID = 'PLg1ZRqch8VjNlu0KLPI58iANTLvuoFcvz';
 const PLAYLIST_URL = `https://www.youtube.com/playlist?list=${PLAYLIST_ID}`;
 
-const videos = [
-  {
-    id: 'dQw4w9WgXcQ', // placeholder — will redirect to playlist
-    title: 'Breaking Gravity: Somatic Awakening',
-    thumb: `https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg`,
-    realThumb: `https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg`,
-  },
-  {
-    id: 'formless-1',
-    title: 'The Architecture of the Self',
-    thumb: null,
-    label: 'THE FORMLESS GUIDE',
-  },
-  {
-    id: 'formless-2',
-    title: 'Shadow Integration: Jungian Depth Work',
-    thumb: null,
-    label: 'THE FORMLESS GUIDE',
-  },
-  {
-    id: 'formless-3',
-    title: 'Nervous System Reset: Somatic Technology',
-    thumb: null,
-    label: 'THE FORMLESS GUIDE',
-  },
-  {
-    id: 'formless-4',
-    title: 'Cosmic Symbolism & Sacred Geometry',
-    thumb: null,
-    label: 'THE FORMLESS GUIDE',
-  },
-  {
-    id: 'formless-5',
-    title: 'Non-Dual Awareness: The Direct Path',
-    thumb: null,
-    label: 'THE FORMLESS GUIDE',
-  },
-  {
-    id: 'formless-6',
-    title: 'The Formless Practice: Daily Presence',
-    thumb: null,
-    label: 'THE FORMLESS GUIDE',
-  },
-];
+function usePlaylistVideos() {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-// Decorative gradient card for videos without thumbnails
-function VideoCard({ video, index }) {
+  useEffect(() => {
+    const apiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
+    if (!apiKey) { setLoading(false); return; }
+
+    fetch(
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${PLAYLIST_ID}&maxResults=12&key=${apiKey}`
+    )
+      .then(r => r.json())
+      .then(data => {
+        if (!data.items) return;
+        setVideos(
+          data.items
+            .filter(item => item.snippet.thumbnails)
+            .map(item => ({
+              id: item.snippet.resourceId.videoId,
+              title: item.snippet.title,
+              thumb:
+                item.snippet.thumbnails.maxres?.url ||
+                item.snippet.thumbnails.high?.url ||
+                item.snippet.thumbnails.medium?.url,
+            }))
+        );
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  return { videos, loading };
+}
+
+// Fallback placeholder card used when API key is absent or while loading
+function PlaceholderCard({ index }) {
   const gradients = [
     'linear-gradient(135deg, #0d1530 0%, #1a2d55 40%, #001a3a 100%)',
     'linear-gradient(135deg, #1a0d30 0%, #2d1a55 40%, #0d0020 100%)',
@@ -63,6 +50,20 @@ function VideoCard({ video, index }) {
     'linear-gradient(135deg, #1a1030 0%, #2a1a45 40%, #0d0825 100%)',
     'linear-gradient(135deg, #0a1525 0%, #172440 40%, #060f1a 100%)',
   ];
+  const titles = [
+    'Breaking Gravity: Somatic Awakening',
+    'The Architecture of the Self',
+    'Shadow Integration: Jungian Depth Work',
+    'Nervous System Reset: Somatic Technology',
+    'Cosmic Symbolism & Sacred Geometry',
+    'Non-Dual Awareness: The Direct Path',
+    'The Formless Practice: Daily Presence',
+    'Archetypal Psychology: Meeting the Shadow',
+    'The Witness State: Pure Consciousness',
+    'Breathwork & Somatic Release',
+    'Sacred Geometry & the Cosmic Body',
+    'The Formless Path: Beyond Dogma',
+  ];
 
   return (
     <a
@@ -70,10 +71,7 @@ function VideoCard({ video, index }) {
       target="_blank"
       rel="noopener noreferrer"
       className="group flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300"
-      style={{
-        width: '280px',
-        border: '1px solid rgba(0,245,212,0.15)',
-      }}
+      style={{ width: '260px', border: '1px solid rgba(0,245,212,0.15)' }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = 'rgba(0,245,212,0.5)';
         e.currentTarget.style.boxShadow = '0 0 25px rgba(0,245,212,0.12)';
@@ -85,45 +83,70 @@ function VideoCard({ video, index }) {
         e.currentTarget.style.transform = 'translateY(0)';
       }}
     >
-      {/* Thumbnail */}
       <div className="relative overflow-hidden" style={{ aspectRatio: '16/9', background: gradients[index % gradients.length] }}>
-        {/* Sacred geometry overlay */}
-        <svg viewBox="0 0 280 157" className="absolute inset-0 w-full h-full" fill="none" opacity="0.3">
-          <circle cx="140" cy="78" r="50" stroke="#00f5d4" strokeWidth="0.8" />
-          <circle cx="140" cy="78" r="30" stroke="#00f5d4" strokeWidth="0.6" />
-          <polygon points="140,28 183,103 97,103" stroke="#00f5d4" strokeWidth="0.7" fill="none" />
-          <polygon points="140,128 183,53 97,53" stroke="#7b2fff" strokeWidth="0.7" fill="none" />
-          {[0,60,120,180,240,300].map((a,i) => (
-            <circle key={i} cx={140 + Math.cos(a*Math.PI/180)*50} cy={78 + Math.sin(a*Math.PI/180)*50}
-              r="3" fill="#00f5d4" opacity="0.6" />
-          ))}
+        <svg viewBox="0 0 260 146" className="absolute inset-0 w-full h-full" fill="none" opacity="0.25">
+          <circle cx="130" cy="73" r="45" stroke="#00f5d4" strokeWidth="0.7" />
+          <polygon points="130,28 173,95 87,95" stroke="#00f5d4" strokeWidth="0.6" fill="none" />
+          <polygon points="130,118 173,51 87,51" stroke="#7b2fff" strokeWidth="0.6" fill="none" />
         </svg>
-        {/* Play button */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+          <div className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
             style={{ background: 'rgba(0,245,212,0.2)', border: '1px solid rgba(0,245,212,0.5)' }}>
-            <svg viewBox="0 0 24 24" className="w-5 h-5 ml-1" fill="#00f5d4">
-              <path d="M8 5v14l11-7z" />
-            </svg>
+            <svg viewBox="0 0 24 24" className="w-5 h-5 ml-1" fill="#00f5d4"><path d="M8 5v14l11-7z" /></svg>
           </div>
         </div>
-        {/* Label badge */}
-        <div className="absolute top-3 left-3">
-          <span className="font-cinzel text-xs px-2 py-1 rounded"
-            style={{ background: 'rgba(10,14,26,0.85)', color: '#00f5d4', border: '1px solid rgba(0,245,212,0.3)', fontSize: '0.6rem', letterSpacing: '0.1em' }}>
-            THE FORMLESS GUIDE
-          </span>
+      </div>
+      <div className="p-3" style={{ background: '#1a2035' }}>
+        <p className="font-raleway font-medium text-cream text-sm leading-snug line-clamp-2">
+          {titles[index % titles.length]}
+        </p>
+      </div>
+    </a>
+  );
+}
+
+function VideoCard({ video }) {
+  return (
+    <a
+      href={`https://www.youtube.com/watch?v=${video.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300"
+      style={{ width: '260px', border: '1px solid rgba(0,245,212,0.15)' }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = 'rgba(0,245,212,0.5)';
+        e.currentTarget.style.boxShadow = '0 0 25px rgba(0,245,212,0.12)';
+        e.currentTarget.style.transform = 'translateY(-4px)';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = 'rgba(0,245,212,0.15)';
+        e.currentTarget.style.boxShadow = 'none';
+        e.currentTarget.style.transform = 'translateY(0)';
+      }}
+    >
+      <div className="relative overflow-hidden" style={{ aspectRatio: '16/9', background: '#0d1530' }}>
+        <img
+          src={video.thumb}
+          alt={video.title}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        {/* Play overlay */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ background: 'rgba(10,14,26,0.4)' }}>
+          <div className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{ background: 'rgba(0,245,212,0.25)', border: '1.5px solid rgba(0,245,212,0.7)' }}>
+            <svg viewBox="0 0 24 24" className="w-5 h-5 ml-1" fill="#00f5d4"><path d="M8 5v14l11-7z" /></svg>
+          </div>
         </div>
       </div>
-
-      {/* Card info */}
-      <div className="p-4" style={{ background: '#1a2035' }}>
-        <p className="font-raleway font-medium text-cream text-sm leading-snug">
+      <div className="p-3" style={{ background: '#1a2035' }}>
+        <p className="font-raleway font-medium text-cream text-sm leading-snug line-clamp-2">
           {video.title}
         </p>
-        <p className="font-raleway text-xs mt-2 flex items-center gap-1" style={{ color: '#7a8aaa' }}>
+        <p className="font-raleway text-xs mt-1.5 flex items-center gap-1" style={{ color: '#7a8aaa' }}>
           <svg viewBox="0 0 24 24" className="w-3 h-3" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
           </svg>
           Watch on YouTube
         </p>
@@ -135,10 +158,15 @@ function VideoCard({ video, index }) {
 export default function MomentsSection() {
   const carouselRef = useRef(null);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const { videos, loading } = usePlaylistVideos();
+
+  // Show 7 placeholders while loading or if no API key
+  const showPlaceholders = loading || videos.length === 0;
+  const placeholderCount = 7;
 
   const scroll = (dir) => {
     if (!carouselRef.current) return;
-    carouselRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
+    carouselRef.current.scrollBy({ left: dir * 290, behavior: 'smooth' });
   };
 
   return (
@@ -160,73 +188,71 @@ export default function MomentsSection() {
             </p>
           </div>
 
-        {/* Carousel container */}
-        <div className="relative">
-          {/* Left arrow */}
-          <button
-            onClick={() => scroll(-1)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-            style={{ background: '#1a2035', border: '1px solid rgba(0,245,212,0.3)', color: '#00f5d4' }}
-            onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(0,245,212,0.3)'}
-            onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
-          >
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+          {/* Carousel */}
+          <div className="relative">
+            <button
+              onClick={() => scroll(-1)}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+              style={{ background: '#1a2035', border: '1px solid rgba(0,245,212,0.3)', color: '#00f5d4' }}
+              onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(0,245,212,0.3)'}
+              onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
 
-          {/* Scrollable row */}
-          <div
-            ref={carouselRef}
-            className="flex gap-5 overflow-x-auto carousel-scroll pb-4"
-            style={{ scrollSnapType: 'x mandatory', paddingLeft: '8px', paddingRight: '8px' }}
-          >
-            {videos.map((video, i) => (
-              <div key={video.id} style={{ scrollSnapAlign: 'start' }}>
-                <VideoCard video={video} index={i} />
-              </div>
-            ))}
+            <div
+              ref={carouselRef}
+              className="flex gap-5 overflow-x-auto carousel-scroll pb-4"
+              style={{ scrollSnapType: 'x mandatory', paddingLeft: '8px', paddingRight: '8px' }}
+            >
+              {showPlaceholders
+                ? Array.from({ length: placeholderCount }, (_, i) => (
+                    <div key={i} style={{ scrollSnapAlign: 'start' }}>
+                      <PlaceholderCard index={i} />
+                    </div>
+                  ))
+                : videos.map(video => (
+                    <div key={video.id} style={{ scrollSnapAlign: 'start' }}>
+                      <VideoCard video={video} />
+                    </div>
+                  ))
+              }
+            </div>
+
+            <button
+              onClick={() => scroll(1)}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+              style={{ background: '#1a2035', border: '1px solid rgba(0,245,212,0.3)', color: '#00f5d4' }}
+              onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(0,245,212,0.3)'}
+              onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
 
-          {/* Right arrow */}
-          <button
-            onClick={() => scroll(1)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-            style={{ background: '#1a2035', border: '1px solid rgba(0,245,212,0.3)', color: '#00f5d4' }}
-            onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(0,245,212,0.3)'}
-            onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
-          >
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Full playlist CTA */}
-        <div className="text-center mt-10">
-          <a
-            href={PLAYLIST_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-cinzel text-sm tracking-widest px-8 py-3 rounded inline-block transition-all duration-300"
-            style={{
-              color: '#00f5d4',
-              border: '1px solid rgba(0,245,212,0.4)',
-              background: 'transparent',
-              letterSpacing: '0.15em',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'rgba(0,245,212,0.08)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(0,245,212,0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            VIEW FULL PLAYLIST
-          </a>
-        </div>
+          <div className="text-center mt-10">
+            <a
+              href={PLAYLIST_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-cinzel text-sm tracking-widest px-8 py-3 rounded inline-block transition-all duration-300"
+              style={{ color: '#00f5d4', border: '1px solid rgba(0,245,212,0.4)', background: 'transparent', letterSpacing: '0.15em' }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(0,245,212,0.08)';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(0,245,212,0.25)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              VIEW FULL PLAYLIST
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>

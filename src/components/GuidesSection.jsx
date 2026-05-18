@@ -138,16 +138,7 @@ function ChatModal({ guide, onClose }) {
 
     try {
       if (!apiKey) throw new Error('no-key');
-      let text;
-      try {
-        text = await tryModel('gemini-2.0-flash');
-      } catch (e) {
-        if (e.message?.includes('429') || e.message?.includes('quota')) {
-          text = await tryModel('gemini-1.5-flash');
-        } else {
-          throw e;
-        }
-      }
+      const text = await tryModel('gemini-2.5-flash');
       setMessages(prev => [...prev, { role: 'assistant', text }]);
     } catch (err) {
       const isQuota = err.message?.includes('429') || err.message?.includes('quota');

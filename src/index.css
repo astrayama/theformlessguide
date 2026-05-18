@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0a0e1a;
+  --panel: #1a2035;
+  --teal: #00f5d4;
+  --purple: #7b2fff;
+  --cream: #e8e0d0;
+  --muted: #7a8aaa;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--cream);
+  font-family: 'Raleway', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--teal);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+/* Glow utilities */
+.glow-teal {
+  box-shadow: 0 0 20px rgba(0, 245, 212, 0.4), 0 0 40px rgba(0, 245, 212, 0.15);
+}
+.glow-purple {
+  box-shadow: 0 0 20px rgba(123, 47, 255, 0.4), 0 0 40px rgba(123, 47, 255, 0.15);
+}
+.text-glow-teal {
+  text-shadow: 0 0 20px rgba(0, 245, 212, 0.6), 0 0 40px rgba(0, 245, 212, 0.3);
+}
+.text-glow-white {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 0 60px rgba(0, 245, 212, 0.2);
+}
+
+/* Chat scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 3px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--teal);
+  opacity: 0.3;
+}
+
+/* Parallax background */
+.parallax-bg {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Horizontal scroll carousel */
+.carousel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--teal) var(--panel);
+}
+.carousel-scroll::-webkit-scrollbar {
+  height: 3px;
+}
+.carousel-scroll::-webkit-scrollbar-thumb {
+  background: var(--teal);
+}
+
+/* Mobile chakra bar */
+@media (max-width: 767px) {
+  .chakra-mobile-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 14, 26, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 245, 212, 0.2);
+  }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.85; }
+}
+
+@keyframes bounce-chevron {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.animate-bounce-chevron {
+  animation: bounce-chevron 1.5s ease-in-out infinite;
+}

@@ -122,29 +122,43 @@ function ChatModal({ guide, onClose }) {
     setMessages(prev => [...prev, { role: 'user', text: userText }]);
     setLoading(true);
 
-    try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) throw new Error('Missing VITE_GEMINI_API_KEY');
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    const history = messages.slice(1).map(m => ({
+      role: m.role === 'user' ? 'user' : 'model',
+      parts: [{ text: m.text }],
+    }));
+
+    const tryModel = async (modelName) => {
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({
-        model: 'gemini-2.0-flash',
-        systemInstruction: guide.systemPrompt,
-      });
-
-      // Build history for Gemini (exclude the first assistant greeting from history)
-      const history = messages.slice(1).map(m => ({
-        role: m.role === 'user' ? 'user' : 'model',
-        parts: [{ text: m.text }],
-      }));
-
+      const model = genAI.getGenerativeModel({ model: modelName, systemInstruction: guide.systemPrompt });
       const chat = model.startChat({ history });
       const result = await chat.sendMessage(userText);
-      const text = result.response.text();
+      return result.response.text();
+    };
+
+    try {
+      if (!apiKey) throw new Error('no-key');
+      let text;
+      try {
+        text = await tryModel('gemini-2.0-flash');
+      } catch (e) {
+        if (e.message?.includes('429') || e.message?.includes('quota')) {
+          text = await tryModel('gemini-1.5-flash');
+        } else {
+          throw e;
+        }
+      }
       setMessages(prev => [...prev, { role: 'assistant', text }]);
     } catch (err) {
+      const isQuota = err.message?.includes('429') || err.message?.includes('quota');
+      const isNoKey = err.message === 'no-key';
       setMessages(prev => [...prev, {
         role: 'assistant',
-        text: 'The channel is momentarily obscured. Please try again.',
+        text: isNoKey
+          ? 'No API key configured. Add VITE_GEMINI_API_KEY to your environment.'
+          : isQuota
+          ? 'The API quota has been reached for today. Please add billing to your Google Cloud project at console.cloud.google.com, or try again tomorrow when the free tier resets.'
+          : 'Something went wrong reaching the API. Please try again in a moment.',
       }]);
     } finally {
       setLoading(false);

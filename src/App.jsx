@@ -10,6 +10,7 @@ import StillnessSection from './components/StillnessSection';
 import CatalogSection from './components/CatalogSection';
 import ShopSection from './components/ShopSection';
 import Footer from './components/Footer';
+import { Analytics } from "@vercel/analytics/next"
 
 const SECTIONS = ['hero', 'guides', 'moments', 'about', 'stillness', 'catalog', 'shop'];
 
@@ -77,7 +78,9 @@ export default function App() {
         <CatalogSection />
         <ShopSection />
         <Footer />
+        
       </main>
+      <Analytics />
     </div>
   );
 }

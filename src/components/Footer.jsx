@@ -18,9 +18,9 @@ export default function Footer() {
             rel="noopener noreferrer"
             title={link.name}
             className="transition-all duration-300"
-            style={{ color: '#7a8aaa' }}
+            style={{ color: '#8a96b8' }}
             onMouseEnter={e => e.currentTarget.style.color = '#00f5d4'}
-            onMouseLeave={e => e.currentTarget.style.color = '#7a8aaa'}
+            onMouseLeave={e => e.currentTarget.style.color = '#8a96b8'}
           >
             <div className="w-5 h-5">{link.icon}</div>
           </a>
@@ -29,15 +29,15 @@ export default function Footer() {
 
       {/* Wordmark */}
       <p className="font-cinzel text-sm tracking-widest mb-2"
-        style={{ color: '#7a8aaa', letterSpacing: '0.15em' }}>
+        style={{ color: '#8a96b8', letterSpacing: '0.15em' }}>
         THE FORMLESS GUIDE
       </p>
 
-      <p className="font-raleway text-xs" style={{ color: '#4a5570' }}>
+      <p className="font-sans text-xs" style={{ color: '#4a5570' }}>
         2026 © The Formless Guide. All rights reserved.
       </p>
 
-      <p className="font-raleway text-xs mt-4 italic" style={{ color: '#3a4560' }}>
+      <p className="font-sans text-xs mt-4 italic" style={{ color: '#3a4560' }}>
         "The path is formless, fearless, and free beyond dogma."
       </p>
     </footer>

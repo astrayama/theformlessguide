@@ -97,11 +97,11 @@ export default function CatalogSection() {
           transition={{ duration: 1, ease: 'easeOut' }}
         >
           <div className="text-center mb-16">
-            <h2 className="font-cinzel font-bold text-cream mb-4"
+            <h2 className="font-cinzel font-medium text-cream mb-4"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
               Infinite Wisdom
             </h2>
-            <p className="font-raleway text-muted max-w-xl mx-auto">
+            <p className="font-sans text-muted max-w-xl mx-auto">
               Explore the full catalog of teachings, meditations, and guides
             </p>
           </div>
@@ -110,8 +110,8 @@ export default function CatalogSection() {
           {categories.map((cat) => (
             <div
               key={cat.id}
-              className="flex flex-col items-center text-center p-7 rounded-xl transition-all duration-350 group"
-              style={{ background: '#1a2035', border: `1px solid ${cat.accent}22` }}
+              className="glass flex flex-col items-center text-center p-7 transition-all duration-350 group"
+              style={{ borderRadius: '14px', borderColor: `${cat.accent}22` }}
               onMouseEnter={e => {
                 e.currentTarget.style.borderColor = `${cat.accent}66`;
                 e.currentTarget.style.boxShadow = `0 0 25px ${cat.accent}15`;
@@ -125,22 +125,22 @@ export default function CatalogSection() {
                 style={{ filter: `drop-shadow(0 0 6px ${cat.accent}66)` }}>
                 {cat.icon}
               </div>
-              <h3 className="font-cinzel font-semibold mb-3" style={{ color: cat.accent, fontSize: '0.95rem', lineHeight: 1.4 }}>
+              <h3 className="font-cinzel font-medium mb-3" style={{ color: cat.accent, fontSize: '0.95rem', lineHeight: 1.4 }}>
                 {cat.label}
               </h3>
-              <p className="font-raleway text-xs leading-relaxed mb-6" style={{ color: '#7a8aaa' }}>
+              <p className="font-sans text-xs leading-relaxed mb-6" style={{ color: '#8a96b8' }}>
                 {cat.description}
               </p>
               <a
                 href="https://www.youtube.com/@TheFormlessGuide/playlists"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-cinzel text-xs tracking-widest px-5 py-2 rounded mt-auto transition-all duration-300"
+                className="micro-label px-5 py-2 rounded mt-auto transition-all duration-300"
                 style={{
                   color: cat.accent,
                   border: `1px solid ${cat.accent}44`,
                   background: 'transparent',
-                  letterSpacing: '0.12em',
+                  fontSize: '11px',
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.background = `${cat.accent}15`;
@@ -163,12 +163,11 @@ export default function CatalogSection() {
             href="https://www.youtube.com/@TheFormlessGuide/playlists"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-cinzel text-sm tracking-widest px-10 py-4 rounded inline-block transition-all duration-300"
+            className="micro-label px-10 py-4 rounded inline-block transition-all duration-300"
             style={{
               color: '#CC00FF',
               border: '1.5px solid rgba(204,0,255,0.5)',
               background: 'transparent',
-              letterSpacing: '0.2em',
             }}
             onMouseEnter={e => {
               e.currentTarget.style.background = 'rgba(204,0,255,0.08)';

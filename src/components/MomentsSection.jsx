@@ -70,8 +70,8 @@ function PlaceholderCard({ index }) {
       href={PLAYLIST_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300"
-      style={{ width: '260px', border: '1px solid rgba(0,245,212,0.15)' }}
+      className="group flex-shrink-0 overflow-hidden transition-all duration-300"
+      style={{ width: '260px', borderRadius: '14px', border: '1px solid rgba(0,245,212,0.15)' }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = 'rgba(0,245,212,0.5)';
         e.currentTarget.style.boxShadow = '0 0 25px rgba(0,245,212,0.12)';
@@ -96,8 +96,8 @@ function PlaceholderCard({ index }) {
           </div>
         </div>
       </div>
-      <div className="p-3" style={{ background: '#1a2035' }}>
-        <p className="font-raleway font-medium text-cream text-sm leading-snug line-clamp-2">
+      <div className="glass p-3" style={{ border: 'none' }}>
+        <p className="font-sans font-medium text-cream text-sm leading-snug line-clamp-2">
           {titles[index % titles.length]}
         </p>
       </div>
@@ -111,8 +111,8 @@ function VideoCard({ video }) {
       href={`https://www.youtube.com/watch?v=${video.id}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300"
-      style={{ width: '260px', border: '1px solid rgba(0,245,212,0.15)' }}
+      className="group flex-shrink-0 overflow-hidden transition-all duration-300"
+      style={{ width: '260px', borderRadius: '14px', border: '1px solid rgba(0,245,212,0.15)' }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = 'rgba(0,245,212,0.5)';
         e.currentTarget.style.boxShadow = '0 0 25px rgba(0,245,212,0.12)';
@@ -140,11 +140,11 @@ function VideoCard({ video }) {
           </div>
         </div>
       </div>
-      <div className="p-3" style={{ background: '#1a2035' }}>
-        <p className="font-raleway font-medium text-cream text-sm leading-snug line-clamp-2">
+      <div className="glass p-3" style={{ border: 'none' }}>
+        <p className="font-sans font-medium text-cream text-sm leading-snug line-clamp-2">
           {video.title}
         </p>
-        <p className="font-raleway text-xs mt-1.5 flex items-center gap-1" style={{ color: '#7a8aaa' }}>
+        <p className="font-sans text-xs mt-1.5 flex items-center gap-1" style={{ color: '#8a96b8' }}>
           <svg viewBox="0 0 24 24" className="w-3 h-3" fill="currentColor">
             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
           </svg>
@@ -179,11 +179,11 @@ export default function MomentsSection() {
           transition={{ duration: 1, ease: 'easeOut' }}
         >
           <div className="text-center mb-14">
-            <h2 className="font-cinzel font-bold text-cream mb-4"
+            <h2 className="font-cinzel font-medium text-cream mb-4"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
               Formless Moments
             </h2>
-            <p className="font-raleway text-muted max-w-xl mx-auto">
+            <p className="font-sans text-muted max-w-xl mx-auto">
               Guided movement and somatic technology to break gravity
             </p>
           </div>
@@ -192,8 +192,8 @@ export default function MomentsSection() {
           <div className="relative">
             <button
               onClick={() => scroll(-1)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-              style={{ background: '#1a2035', border: '1px solid rgba(0,245,212,0.3)', color: '#00f5d4' }}
+              className="glass absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+              style={{ borderColor: 'rgba(0,245,212,0.3)', color: '#00f5d4' }}
               onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(0,245,212,0.3)'}
               onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
             >
@@ -223,8 +223,8 @@ export default function MomentsSection() {
 
             <button
               onClick={() => scroll(1)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-              style={{ background: '#1a2035', border: '1px solid rgba(0,245,212,0.3)', color: '#00f5d4' }}
+              className="glass absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-2 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+              style={{ borderColor: 'rgba(0,245,212,0.3)', color: '#00f5d4' }}
               onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 15px rgba(0,245,212,0.3)'}
               onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
             >
@@ -239,8 +239,8 @@ export default function MomentsSection() {
               href={PLAYLIST_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-cinzel text-sm tracking-widest px-8 py-3 rounded inline-block transition-all duration-300"
-              style={{ color: '#00f5d4', border: '1px solid rgba(0,245,212,0.4)', background: 'transparent', letterSpacing: '0.15em' }}
+              className="micro-label px-8 py-3.5 rounded inline-block transition-all duration-300"
+              style={{ color: '#00f5d4', border: '1px solid rgba(0,245,212,0.4)', background: 'transparent' }}
               onMouseEnter={e => {
                 e.currentTarget.style.background = 'rgba(0,245,212,0.08)';
                 e.currentTarget.style.boxShadow = '0 0 20px rgba(0,245,212,0.25)';

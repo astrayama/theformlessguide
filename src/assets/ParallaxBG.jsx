@@ -1,34 +1,12 @@
 export default function ParallaxBG() {
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none z-0" style={{ opacity: 0.12 }}>
+    <div className="fixed inset-0 w-full h-full pointer-events-none z-0" style={{ opacity: 0.11 }}>
       <svg
         viewBox="0 0 1440 900"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full"
         preserveAspectRatio="xMidYMid slice"
       >
-        <defs>
-          <radialGradient id="pbNebula1" cx="25%" cy="30%" r="40%">
-            <stop offset="0%" stopColor="#00f5d4" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#00f5d4" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="pbNebula2" cx="75%" cy="60%" r="45%">
-            <stop offset="0%" stopColor="#7b2fff" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#7b2fff" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="pbNebula3" cx="50%" cy="80%" r="35%">
-            <stop offset="0%" stopColor="#00f5d4" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#00f5d4" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-
-        <rect width="1440" height="900" fill="#0a0e1a" />
-
-        {/* Nebula washes */}
-        <rect width="1440" height="900" fill="url(#pbNebula1)" />
-        <rect width="1440" height="900" fill="url(#pbNebula2)" />
-        <rect width="1440" height="900" fill="url(#pbNebula3)" />
-
         {/* Faint stars */}
         {[
           [100,80],[250,150],[400,60],[600,200],[800,100],[950,180],

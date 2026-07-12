@@ -39,8 +39,8 @@ const socialLinks = [
 
 export default function LeftSidebar() {
   return (
-    <div className="fixed left-0 top-0 h-screen w-16 z-40 hidden md:flex flex-col items-center justify-center gap-8"
-      style={{ borderRight: '1px solid rgba(0,245,212,0.15)' }}>
+    <div className="glass fixed left-0 top-0 h-screen w-16 z-40 hidden md:flex flex-col items-center justify-center gap-8"
+      style={{ border: 'none', borderRight: '1px solid rgba(0,245,212,0.15)' }}>
       {/* Vertical teal glow line */}
       <div className="absolute right-0 top-1/4 bottom-1/4 w-px"
         style={{ background: 'linear-gradient(to bottom, transparent, #00f5d4, transparent)', opacity: 0.4 }} />
@@ -53,7 +53,7 @@ export default function LeftSidebar() {
           rel="noopener noreferrer"
           title={link.name}
           className="text-muted transition-all duration-300 hover:text-teal group"
-          style={{ color: '#7a8aaa' }}
+          style={{ color: '#8a96b8' }}
         >
           <div className="transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(0,245,212,0.8)]">
             {link.icon}

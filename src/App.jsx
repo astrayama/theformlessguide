@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import OpalField from './assets/OpalField';
 import ParallaxBG from './assets/ParallaxBG';
 import LeftSidebar from './components/LeftSidebar';
 import ChakraNav from './components/ChakraNav';
@@ -10,7 +11,7 @@ import StillnessSection from './components/StillnessSection';
 import CatalogSection from './components/CatalogSection';
 import ShopSection from './components/ShopSection';
 import Footer from './components/Footer';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 
 const SECTIONS = ['hero', 'guides', 'moments', 'about', 'stillness', 'catalog', 'shop'];
 
@@ -53,8 +54,11 @@ export default function App() {
   const activeSection = useActiveSection();
 
   return (
-    <div className="relative min-h-screen" style={{ background: '#0a0e1a' }}>
-      {/* Fixed parallax background */}
+    <div className="relative min-h-screen">
+      {/* Fixed opalescent field — tint follows the active section's chakra */}
+      <OpalField activeSection={activeSection} />
+
+      {/* Fixed parallax texture (stars + sacred geometry) over the field */}
       <ParallaxBG />
 
       {/* Mobile chakra top bar — sticky */}

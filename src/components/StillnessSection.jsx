@@ -41,11 +41,11 @@ export default function StillnessSection() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          <h2 className="font-cinzel font-bold text-cream mb-4"
+          <h2 className="font-cinzel font-medium text-cream mb-4"
             style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
             A Moment of Stillness
           </h2>
-          <p className="font-raleway text-muted mb-14 max-w-md mx-auto">
+          <p className="font-sans text-muted mb-14 max-w-md mx-auto">
             Type a burden you wish to release below. Watch it fade into the void.
           </p>
         </motion.div>
@@ -70,7 +70,7 @@ export default function StillnessSection() {
           <AnimatePresence>
             {releasing && (
               <motion.p
-                className="absolute font-raleway italic pointer-events-none z-10"
+                className="absolute font-sans italic pointer-events-none z-10"
                 style={{ color: '#0099ff', fontSize: '1.1rem', maxWidth: '80%', textAlign: 'center' }}
                 initial={{ opacity: 1, y: 0, scale: 1 }}
                 animate={{ opacity: 0, y: -120, scale: 0.7 }}
@@ -93,34 +93,35 @@ export default function StillnessSection() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4 }}
               >
-                <input
-                  type="text"
-                  value={burden}
-                  onChange={e => setBurden(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleRelease()}
-                  placeholder="What weighs on you today?"
-                  disabled={!!releasing}
-                  className="w-full max-w-lg bg-transparent font-raleway text-center text-cream text-lg outline-none placeholder-muted/40 pb-3"
-                  style={{
-                    borderBottom: '1px solid rgba(0,153,255,0.4)',
-                    caretColor: '#0099ff',
-                    color: '#e8e0d0',
-                  }}
-                />
+                <div className="glass w-full max-w-lg rounded-xl px-6 pt-5 pb-4">
+                  <input
+                    type="text"
+                    value={burden}
+                    onChange={e => setBurden(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleRelease()}
+                    placeholder="What weighs on you today?"
+                    disabled={!!releasing}
+                    className="w-full bg-transparent font-sans text-center text-cream text-lg outline-none placeholder-muted/40 pb-3"
+                    style={{
+                      borderBottom: '1px solid rgba(0,153,255,0.4)',
+                      caretColor: '#0099ff',
+                      color: '#f2ecdf',
+                    }}
+                  />
+                </div>
                 <button
                   onClick={handleRelease}
                   disabled={!burden.trim() || !!releasing}
-                  className="font-cinzel text-sm tracking-widest px-8 py-3 rounded transition-all duration-300"
+                  className="micro-label px-8 py-3.5 rounded transition-all duration-300"
                   style={{
                     color: '#0099ff',
                     border: '1px solid rgba(0,153,255,0.5)',
                     background: 'transparent',
-                    letterSpacing: '0.15em',
                     opacity: burden.trim() ? 1 : 0.4,
                   }}
                   onMouseEnter={e => {
                     if (burden.trim()) {
-                      e.currentTarget.style.background = 'rgba(0,153,255,0.1)';
+                      e.currentTarget.style.background = 'rgba(0,153,255,0.08)';
                       e.currentTarget.style.boxShadow = '0 0 20px rgba(0,153,255,0.3)';
                     }
                   }}
@@ -142,7 +143,7 @@ export default function StillnessSection() {
               >
                 <p className="font-cinzel text-center leading-relaxed"
                   style={{
-                    color: '#e8e0d0',
+                    color: '#f2ecdf',
                     fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
                     textShadow: '0 0 20px rgba(0,153,255,0.3)',
                     maxWidth: '480px',
@@ -154,12 +155,11 @@ export default function StillnessSection() {
                 <div className="flex flex-col sm:flex-row gap-4 items-center">
                   <button
                     onClick={scrollToGuides}
-                    className="font-cinzel text-sm tracking-widest px-8 py-3 rounded transition-all duration-300"
+                    className="micro-label px-8 py-3.5 rounded transition-all duration-300"
                     style={{
                       color: '#0099ff',
                       border: '1px solid rgba(0,153,255,0.5)',
                       background: 'rgba(0,153,255,0.08)',
-                      letterSpacing: '0.12em',
                     }}
                     onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 20px rgba(0,153,255,0.3)'}
                     onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
@@ -168,10 +168,10 @@ export default function StillnessSection() {
                   </button>
                   <button
                     onClick={handleReset}
-                    className="font-raleway text-sm transition-colors"
-                    style={{ color: '#7a8aaa' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#e8e0d0'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#7a8aaa'}
+                    className="font-sans text-sm transition-colors"
+                    style={{ color: '#8a96b8' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#f2ecdf'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#8a96b8'}
                   >
                     Release another
                   </button>

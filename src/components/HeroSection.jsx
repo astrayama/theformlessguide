@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import HeroSVG from '../assets/HeroSVG';
 
 export default function HeroSection() {
   return (
@@ -8,8 +7,23 @@ export default function HeroSection() {
       className="relative flex items-center justify-center overflow-hidden"
       style={{ minHeight: '100vh' }}
     >
-      {/* Hero SVG background */}
-      <HeroSVG />
+      {/* Enso artwork — centered over the opal field */}
+      <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 0 }}>
+        <motion.img
+          src="/enso-1024.png"
+          alt=""
+          aria-hidden="true"
+          style={{
+            width: 'min(88vmin, 720px)',
+            height: 'auto',
+            opacity: 0.55,
+            filter: 'drop-shadow(0 0 60px rgba(0,245,212,0.12))',
+          }}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 0.55, scale: 1 }}
+          transition={{ duration: 2, ease: 'easeOut' }}
+        />
+      </div>
 
       {/* Tall gradient fade — the artwork dissolves into the opal field, no hard seam */}
       <div

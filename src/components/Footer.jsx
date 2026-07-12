@@ -1,4 +1,5 @@
 import { socialLinks } from './LeftSidebar';
+import Logo from '../assets/Logo';
 
 export default function Footer() {
   return (
@@ -27,7 +28,10 @@ export default function Footer() {
         ))}
       </div>
 
-      {/* Wordmark */}
+      {/* Mark + wordmark */}
+      <div className="flex justify-center mb-4">
+        <Logo size={44} style={{ filter: 'drop-shadow(0 0 10px rgba(0,245,212,0.35))' }} />
+      </div>
       <p className="font-cinzel text-sm tracking-widest mb-2"
         style={{ color: '#8a96b8', letterSpacing: '0.15em' }}>
         THE FORMLESS GUIDE

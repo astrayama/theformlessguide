@@ -16,18 +16,17 @@ export default function ShopSection() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          <h2 className="font-cinzel font-bold text-cream mb-4"
+          <h2 className="font-cinzel font-medium text-cream mb-4"
             style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
             Support the Work
           </h2>
-          <p className="font-raleway text-muted mb-14">Wear the frequency.</p>
+          <p className="font-sans text-muted mb-14">Wear the frequency.</p>
 
         {/* Shop card/banner */}
         <div
-          className="relative overflow-hidden rounded-2xl"
+          className="glass relative overflow-hidden rounded-2xl"
           style={{
-            background: '#1a2035',
-            border: '1px solid rgba(204,0,255,0.3)',
+            borderColor: 'rgba(204,0,255,0.3)',
           }}
         >
           {/* Background sacred geometry */}
@@ -74,7 +73,7 @@ export default function ShopSection() {
               style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', letterSpacing: '0.08em' }}>
               The Formless Collection
             </p>
-            <p className="font-raleway text-muted mb-10 max-w-lg mx-auto leading-relaxed">
+            <p className="font-sans text-muted mb-10 max-w-lg mx-auto leading-relaxed">
               Sacred geometry apparel and accessories. Wear the teachings, carry the frequency.
               Every piece is a reminder of your formless nature.
             </p>
@@ -83,12 +82,11 @@ export default function ShopSection() {
               href="https://theformlessguide.printful.me/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-cinzel text-sm tracking-widest px-12 py-4 rounded inline-block transition-all duration-300"
+              className="micro-label px-12 py-4 rounded inline-block transition-all duration-300"
               style={{
                 color: '#CC00FF',
                 border: '1.5px solid rgba(204,0,255,0.6)',
                 background: 'rgba(204,0,255,0.08)',
-                letterSpacing: '0.2em',
                 boxShadow: '0 0 20px rgba(204,0,255,0.2)',
               }}
               onMouseEnter={e => {

@@ -17,7 +17,7 @@ export default function AboutSection() {
           transition={{ duration: 1, ease: 'easeOut' }}
         >
           <div className="text-center mb-16">
-            <h2 className="font-cinzel font-bold text-cream mb-4"
+            <h2 className="font-cinzel font-medium text-cream mb-4"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
               About Guru Jay
             </h2>
@@ -35,11 +35,11 @@ export default function AboutSection() {
                   <circle cx="30" cy="30" r="5" fill="#00f5d4" opacity="0.7" />
                 </svg>
               </div>
-              <h3 className="font-cinzel font-semibold mb-5"
+              <h3 className="font-cinzel font-medium mb-5"
                 style={{ color: '#00f5d4', fontSize: '1.2rem', letterSpacing: '0.08em' }}>
                 THE JOURNEY
               </h3>
-              <p className="font-raleway leading-relaxed" style={{ color: '#b0b8cc', fontSize: '1.05rem' }}>
+              <p className="font-sans leading-relaxed" style={{ color: '#c2c8dc', fontSize: '1.05rem' }}>
                 Guru Jay discovered early that the body was already awake—it is the mind that needs
                 to remember its true nature. Through ancient practices, such as meditation, study,
                 and direct experience, he has become a bridge between ancient wisdom to modern
@@ -58,11 +58,11 @@ export default function AboutSection() {
                   <circle cx="30" cy="30" r="4" fill="#7b2fff" opacity="0.6" />
                 </svg>
               </div>
-              <h3 className="font-cinzel font-semibold mb-5"
+              <h3 className="font-cinzel font-medium mb-5"
                 style={{ color: '#7b2fff', fontSize: '1.2rem', letterSpacing: '0.08em' }}>
                 THE TEACHING
               </h3>
-              <p className="font-raleway leading-relaxed" style={{ color: '#b0b8cc', fontSize: '1.05rem' }}>
+              <p className="font-sans leading-relaxed" style={{ color: '#c2c8dc', fontSize: '1.05rem' }}>
                 The teachings of The Formless Guide offer a Universal Synthesis, exploring the
                 architecture of life through a meta-framework of Philosophy, Psychology, and
                 Science. Guru Jay guides seekers toward their own direct experience of truth by
@@ -83,12 +83,12 @@ export default function AboutSection() {
             <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-32 h-px"
               style={{ background: 'linear-gradient(to right, transparent, #00f5d4, transparent)' }} />
             <blockquote className="font-cinzel italic max-w-2xl mx-auto"
-              style={{ color: '#e8e0d0', fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', lineHeight: 1.6,
+              style={{ color: '#f2ecdf', fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', lineHeight: 1.6,
                 textShadow: '0 0 30px rgba(0,245,212,0.2)' }}>
               "In the void of the unconscious, the material construct dissolves,
               leaving only true presence."
             </blockquote>
-            <p className="font-raleway mt-4 tracking-widest text-xs" style={{ color: '#00f5d4' }}>
+            <p className="micro-label mt-4" style={{ color: '#00f5d4', fontSize: '11px' }}>
               — THE FORMLESS GUIDE
             </p>
           </div>

@@ -61,8 +61,8 @@ export default function ChakraNav({ activeSection }) {
   // Desktop right sidebar
   const Desktop = (
     <div
-      className="fixed right-0 top-0 h-screen w-16 z-40 hidden md:flex flex-col items-center justify-center gap-5"
-      style={{ borderLeft: '1px solid rgba(0,245,212,0.15)' }}
+      className="glass fixed right-0 top-0 h-screen w-16 z-40 hidden md:flex flex-col items-center justify-center gap-5"
+      style={{ border: 'none', borderLeft: '1px solid rgba(0,245,212,0.15)' }}
     >
       <div className="absolute left-0 top-1/4 bottom-1/4 w-px"
         style={{ background: 'linear-gradient(to bottom, transparent, #00f5d4, transparent)', opacity: 0.4 }} />
@@ -79,9 +79,9 @@ export default function ChakraNav({ activeSection }) {
           >
             <ChakraSymbol chakra={chakra} active={active} />
             {/* Tooltip */}
-            <span className="absolute right-12 top-1/2 -translate-y-1/2 text-xs font-raleway whitespace-nowrap
+            <span className="glass absolute right-12 top-1/2 -translate-y-1/2 text-xs font-sans font-medium whitespace-nowrap
               px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-              style={{ background: '#1a2035', color: chakra.color, border: `1px solid ${chakra.color}33` }}>
+              style={{ color: chakra.color, borderColor: `${chakra.color}33` }}>
               {chakra.name}
             </span>
           </button>

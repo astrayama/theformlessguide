@@ -175,10 +175,9 @@ function ChatModal({ guide, onClose }) {
       >
         <motion.div
           ref={chatRef}
-          className="w-full max-w-2xl flex flex-col rounded-xl overflow-hidden"
+          className="glass w-full max-w-2xl flex flex-col rounded-xl overflow-hidden"
           style={{
-            background: '#0d1220',
-            border: `1px solid ${guide.accent}44`,
+            borderColor: `${guide.accent}44`,
             boxShadow: `0 0 40px ${guide.accent}22`,
             height: 'min(80vh, 600px)',
           }}
@@ -190,22 +189,22 @@ function ChatModal({ guide, onClose }) {
         >
           {/* Header */}
           <div className="flex items-center justify-between px-5 py-4"
-            style={{ borderBottom: `1px solid ${guide.accent}33`, background: '#0a0e1a' }}>
+            style={{ borderBottom: `1px solid ${guide.accent}33`, background: 'rgba(10,14,26,0.45)' }}>
             <div className="flex items-center gap-3">
               <div style={{ filter: `drop-shadow(0 0 6px ${guide.accent})` }}>
                 {guide.icon}
               </div>
               <div>
-                <h3 className="font-cinzel font-semibold" style={{ color: guide.accent, fontSize: '1.1rem' }}>
+                <h3 className="font-cinzel font-medium" style={{ color: guide.accent, fontSize: '1.1rem' }}>
                   {guide.name}
                 </h3>
-                <p className="font-raleway text-xs" style={{ color: '#7a8aaa' }}>{guide.title}</p>
+                <p className="font-sans text-xs" style={{ color: '#8a96b8' }}>{guide.title}</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="font-raleway text-muted hover:text-cream transition-colors w-8 h-8 flex items-center justify-center rounded"
-              style={{ color: '#7a8aaa', fontSize: '1.4rem', lineHeight: 1 }}
+              className="font-sans text-muted hover:text-cream transition-colors w-8 h-8 flex items-center justify-center rounded"
+              style={{ color: '#8a96b8', fontSize: '1.4rem', lineHeight: 1 }}
             >
               ×
             </button>
@@ -216,10 +215,10 @@ function ChatModal({ guide, onClose }) {
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div
-                  className="max-w-[80%] px-4 py-3 rounded-xl font-raleway text-sm leading-relaxed"
+                  className={`max-w-[80%] px-4 py-3 rounded-xl font-sans text-sm leading-relaxed${msg.role === 'user' ? '' : ' glass'}`}
                   style={msg.role === 'user'
-                    ? { background: `${guide.accent}18`, border: `1px solid ${guide.accent}33`, color: '#e8e0d0' }
-                    : { background: '#1a2035', border: '1px solid #2a3555', color: '#e8e0d0' }
+                    ? { background: 'rgba(0,245,212,0.10)', border: `1px solid ${guide.accent}33`, color: '#f2ecdf' }
+                    : { color: '#f2ecdf' }
                   }
                 >
                   {msg.text}
@@ -228,8 +227,8 @@ function ChatModal({ guide, onClose }) {
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="px-4 py-3 rounded-xl font-raleway text-sm"
-                  style={{ background: '#1a2035', border: '1px solid #2a3555', color: '#7a8aaa' }}>
+                <div className="glass px-4 py-3 rounded-xl font-sans text-sm"
+                  style={{ color: '#8a96b8' }}>
                   <span className="animate-pulse">...</span>
                 </div>
               </div>
@@ -239,7 +238,7 @@ function ChatModal({ guide, onClose }) {
 
           {/* Input */}
           <div className="px-4 py-3 flex gap-3"
-            style={{ borderTop: `1px solid ${guide.accent}22`, background: '#0a0e1a' }}>
+            style={{ borderTop: `1px solid ${guide.accent}22`, background: 'rgba(10,14,26,0.45)' }}>
             <input
               type="text"
               value={input}
@@ -247,9 +246,9 @@ function ChatModal({ guide, onClose }) {
               onKeyDown={handleKey}
               placeholder="Ask your question..."
               disabled={loading}
-              className="flex-1 bg-transparent font-raleway text-sm outline-none"
+              className="flex-1 bg-transparent font-sans text-sm outline-none"
               style={{
-                color: '#e8e0d0',
+                color: '#f2ecdf',
                 borderBottom: `1px solid ${guide.accent}44`,
                 paddingBottom: '4px',
               }}
@@ -257,7 +256,7 @@ function ChatModal({ guide, onClose }) {
             <button
               onClick={sendMessage}
               disabled={loading || !input.trim()}
-              className="px-4 py-1.5 rounded font-cinzel text-xs tracking-wider transition-all duration-200"
+              className="micro-label px-4 py-1.5 rounded transition-all duration-200"
               style={{
                 background: loading || !input.trim() ? 'transparent' : `${guide.accent}22`,
                 border: `1px solid ${guide.accent}66`,
@@ -294,11 +293,11 @@ export default function GuidesSection() {
           transition={{ duration: 1, ease: 'easeOut' }}
         >
           <div className="text-center mb-16">
-            <h2 className="font-cinzel font-bold text-cream mb-4"
+            <h2 className="font-cinzel font-medium text-cream mb-4"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
               Meet Your Guides
             </h2>
-            <p className="font-raleway text-muted max-w-xl mx-auto">
+            <p className="font-sans text-muted max-w-xl mx-auto">
               Three aspects of consciousness to accompany you on your journey of awakening
             </p>
           </div>
@@ -308,10 +307,10 @@ export default function GuidesSection() {
           {guides.map((guide) => (
             <div
               key={guide.id}
-              className="flex flex-col items-center text-center p-8 rounded-xl cursor-default group transition-all duration-400"
+              className="glass flex flex-col items-center text-center p-8 cursor-default group transition-all duration-400"
               style={{
-                background: '#1a2035',
-                border: `1px solid ${guide.accent}33`,
+                borderRadius: '14px',
+                borderColor: `${guide.accent}33`,
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.borderColor = `${guide.accent}99`;
@@ -325,25 +324,25 @@ export default function GuidesSection() {
               <div className="mb-6" style={{ filter: `drop-shadow(0 0 8px ${guide.accent}66)` }}>
                 {guide.icon}
               </div>
-              <h3 className="font-cinzel font-semibold mb-1" style={{ color: guide.accent, fontSize: '1.2rem' }}>
+              <h3 className="font-cinzel font-medium mb-1" style={{ color: guide.accent, fontSize: '1.2rem' }}>
                 {guide.name}
               </h3>
-              <p className="font-raleway text-xs mb-4" style={{ color: '#7a8aaa', letterSpacing: '0.1em' }}>
+              <p className="micro-label mb-4" style={{ color: '#8a96b8', fontSize: '11px' }}>
                 {guide.title.toUpperCase()}
               </p>
-              <p className="font-raleway text-sm leading-relaxed mb-8" style={{ color: '#b0b8cc' }}>
+              <p className="font-sans text-sm leading-relaxed mb-8" style={{ color: '#c2c8dc' }}>
                 {guide.description}
               </p>
               <button
                 onClick={() => setActiveModal(guide.id)}
-                className="font-cinzel text-xs tracking-widest px-6 py-2.5 rounded transition-all duration-300 mt-auto"
+                className="micro-label px-6 py-2.5 rounded transition-all duration-300 mt-auto"
                 style={{
                   color: guide.accent,
                   border: `1px solid ${guide.accent}66`,
                   background: 'transparent',
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = `${guide.accent}18`;
+                  e.currentTarget.style.background = `${guide.accent}14`;
                   e.currentTarget.style.boxShadow = `0 0 15px ${guide.accent}44`;
                 }}
                 onMouseLeave={e => {
@@ -362,8 +361,8 @@ export default function GuidesSection() {
           <AnimatePresence mode="wait">
             <motion.p
               key={quoteIndex}
-              className="font-raleway italic max-w-2xl mx-auto"
-              style={{ color: '#7a8aaa', fontSize: '0.95rem' }}
+              className="font-sans font-light italic max-w-2xl mx-auto"
+              style={{ color: '#8a96b8', fontSize: '0.95rem' }}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}

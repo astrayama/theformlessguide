@@ -11,11 +11,11 @@ export default function HeroSection() {
       {/* Hero SVG background */}
       <HeroSVG />
 
-      {/* Dark gradient overlay — blends to background at bottom */}
+      {/* Tall gradient fade — the artwork dissolves into the opal field, no hard seam */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to bottom, rgba(10,14,26,0.2) 0%, rgba(10,14,26,0.5) 60%, #0a0e1a 100%)',
+          background: 'linear-gradient(to bottom, rgba(10,14,26,0.2) 0%, rgba(10,14,26,0.45) 55%, rgba(10,14,26,0.85) 100%)',
           zIndex: 1,
         }}
       />
@@ -23,7 +23,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <motion.h1
-          className="font-cinzel font-bold text-cream text-glow-white mb-6 leading-tight"
+          className="font-cinzel font-medium text-cream text-glow-white mb-6 leading-tight"
           style={{
             fontSize: 'clamp(2.5rem, 7vw, 6rem)',
             letterSpacing: '0.05em',
@@ -37,7 +37,7 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="font-raleway text-cream/80 mb-12 max-w-2xl mx-auto leading-relaxed"
+          className="font-sans font-light text-cream/80 mb-12 max-w-2xl mx-auto leading-relaxed"
           style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)' }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -54,18 +54,17 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.8, ease: 'easeOut' }}
         >
           <a
-            href="https://www.youtube.com/playlist?list=PLg1ZRqch8VjNlu0KLPI58iANTLvuoFcvz"
+            href="https://www.youtube.com/playlist?list=PLg1ZRqch8VjPS8d6HN9F3Ugbw7fr2pWKH"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-cinzel font-semibold px-8 py-3 rounded transition-all duration-300 tracking-widest text-sm"
+            className="micro-label px-8 py-3.5 rounded transition-all duration-300"
             style={{
               color: '#00f5d4',
               border: '1.5px solid #00f5d4',
               background: 'transparent',
-              letterSpacing: '0.15em',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = 'rgba(0,245,212,0.1)';
+              e.currentTarget.style.background = 'rgba(0,245,212,0.08)';
               e.currentTarget.style.boxShadow = '0 0 20px rgba(0,245,212,0.4)';
             }}
             onMouseLeave={e => {
@@ -80,12 +79,11 @@ export default function HeroSection() {
             href="https://open.spotify.com/show/2oPHFNP3WpLH0Kg8jQsl3I"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-cinzel font-semibold px-8 py-3 rounded transition-all duration-300 tracking-widest text-sm"
+            className="micro-label px-8 py-3.5 rounded transition-all duration-300"
             style={{
-              color: '#e8e0d0',
+              color: '#f2ecdf',
               border: '1.5px solid rgba(232,224,208,0.3)',
               background: 'transparent',
-              letterSpacing: '0.15em',
             }}
             onMouseEnter={e => {
               e.currentTarget.style.background = 'rgba(232,224,208,0.05)';
@@ -108,7 +106,7 @@ export default function HeroSection() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6, duration: 0.8 }}
       >
-        <span className="font-raleway text-xs tracking-widest" style={{ color: '#7a8aaa' }}>SCROLL</span>
+        <span className="micro-label" style={{ color: '#8a96b8', fontSize: '11px' }}>SCROLL</span>
         <div className="animate-bounce-chevron">
           <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
             <path d="M1 1L10 10L19 1" stroke="#00f5d4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

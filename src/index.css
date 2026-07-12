@@ -201,6 +201,56 @@ body {
   }
 }
 
+/* ---------------------------------------------------------------- */
+/* Cinematic hero — enso breathing, smoke spin, glow, embers         */
+/* ---------------------------------------------------------------- */
+.hero-glow {
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(0, 245, 212, 0.14) 0%,
+    rgba(123, 47, 255, 0.09) 45%,
+    rgba(0, 0, 0, 0) 70%);
+}
+
+/* second copy of the artwork, masked to its smoke core, slowly rotating */
+.enso-smoke-layer {
+  -webkit-mask-image: radial-gradient(circle at center, black 0%, black 34%, transparent 52%);
+  mask-image: radial-gradient(circle at center, black 0%, black 34%, transparent 52%);
+}
+
+.ember {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@keyframes enso-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+@keyframes enso-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.75; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+@keyframes ember-rise {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  12%  { opacity: 0.85; }
+  55%  { transform: translate3d(10px, -22vh, 0); opacity: 0.5; }
+  100% { transform: translate3d(-6px, -42vh, 0); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .enso-breathe { animation: enso-breathe 11s ease-in-out infinite; }
+  .enso-smoke-layer { animation: enso-spin 140s linear infinite; }
+  .hero-glow { animation: glow-pulse 9s ease-in-out infinite; }
+  .ember { animation: ember-rise var(--dur, 12s) ease-in-out var(--delay, 0s) infinite; }
+}
+
 @keyframes breathe {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.15); opacity: 0.85; }

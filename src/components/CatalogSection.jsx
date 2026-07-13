@@ -6,6 +6,7 @@ const categories = [
     id: 'philosophy',
     label: 'Philosophy & Non-Duality',
     description: 'Explore the nature of reality, non-dual awareness, and the architecture of consciousness through ancient and modern lenses.',
+    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjPS8d6HN9F3Ugbw7fr2pWKH',
     accent: '#CC00FF',
     icon: (
       <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
@@ -20,6 +21,7 @@ const categories = [
     id: 'shadow',
     label: 'Shadow Work & Psychology',
     description: 'Journey into depth psychology, Jungian archetypes, and the mechanics of the unconscious mind. Meet your shadow and integrate it.',
+    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjN9GvGXUSa52Cwtrq1B--6T',
     accent: '#7b2fff',
     icon: (
       <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
@@ -36,6 +38,7 @@ const categories = [
     id: 'somatic',
     label: 'Somatic Practice & The Body',
     description: 'Master the biological vessel through nervous system regulation, somatic technology, and embodied movement practices.',
+    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjPqGeQ84DnCxCvr_thY9Apf',
     accent: '#00CC44',
     icon: (
       <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
@@ -54,6 +57,7 @@ const categories = [
     id: 'cosmic',
     label: 'Cosmic Symbolism',
     description: 'Decode the language of the cosmos through sacred geometry, mythological archetypes, and the symbolic architecture of reality.',
+    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjOjhbFnuHXXl6LkA35MOL6E',
     accent: '#ffd700',
     icon: (
       <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
@@ -64,12 +68,12 @@ const categories = [
           return (
             <g key={i}>
               <line
-                x1={30 + Math.cos(a*Math.PI/180)*r2} y1={30 + Math.sin(a*Math.PI/180)*r2}
-                x2={30 + Math.cos(a*Math.PI/180)*r1} y2={30 + Math.sin(a*Math.PI/180)*r1}
+                x1={30 + Math.cos(a * Math.PI / 180) * r2} y1={30 + Math.sin(a * Math.PI / 180) * r2}
+                x2={30 + Math.cos(a * Math.PI / 180) * r1} y2={30 + Math.sin(a * Math.PI / 180) * r1}
                 stroke="#ffd700" strokeWidth="1.2" opacity="0.7" />
               <line
-                x1={30 + Math.cos(a*Math.PI/180)*r1} y1={30 + Math.sin(a*Math.PI/180)*r1}
-                x2={30 + Math.cos(a2*Math.PI/180)*r2} y2={30 + Math.sin(a2*Math.PI/180)*r2}
+                x1={30 + Math.cos(a * Math.PI / 180) * r1} y1={30 + Math.sin(a * Math.PI / 180) * r1}
+                x2={30 + Math.cos(a2 * Math.PI / 180) * r2} y2={30 + Math.sin(a2 * Math.PI / 180) * r2}
                 stroke="#ffd700" strokeWidth="1" opacity="0.6" />
             </g>
           );
@@ -97,90 +101,91 @@ export default function CatalogSection() {
           transition={{ duration: 1, ease: 'easeOut' }}
         >
           <div className="text-center mb-16">
-            <h2 className="font-cinzel font-medium text-cream mb-4"
+            <h2 className="font-cinzel font-bold text-cream mb-4"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
               Infinite Wisdom
             </h2>
-            <p className="font-sans text-muted max-w-xl mx-auto">
+            <p className="font-raleway text-muted max-w-xl mx-auto">
               Explore the full catalog of teachings, meditations, and guides
             </p>
           </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {categories.map((cat) => (
-            <div
-              key={cat.id}
-              className="glass flex flex-col items-center text-center p-7 transition-all duration-350 group"
-              style={{ borderRadius: '14px', borderColor: `${cat.accent}22` }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = `${cat.accent}66`;
-                e.currentTarget.style.boxShadow = `0 0 25px ${cat.accent}15`;
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = `${cat.accent}22`;
-                e.currentTarget.style.boxShadow = 'none';
-              }}
-            >
-              <div className="mb-5 transition-all duration-300 group-hover:scale-110"
-                style={{ filter: `drop-shadow(0 0 6px ${cat.accent}66)` }}>
-                {cat.icon}
-              </div>
-              <h3 className="font-cinzel font-medium mb-3" style={{ color: cat.accent, fontSize: '0.95rem', lineHeight: 1.4 }}>
-                {cat.label}
-              </h3>
-              <p className="font-sans text-xs leading-relaxed mb-6" style={{ color: '#8a96b8' }}>
-                {cat.description}
-              </p>
-              <a
-                href="https://www.youtube.com/@TheFormlessGuide/playlists"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="micro-label px-5 py-2 rounded mt-auto transition-all duration-300"
-                style={{
-                  color: cat.accent,
-                  border: `1px solid ${cat.accent}44`,
-                  background: 'transparent',
-                  fontSize: '11px',
-                }}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {categories.map((cat) => (
+              <div
+                key={cat.id}
+                className="flex flex-col items-center text-center p-7 rounded-xl transition-all duration-350 group"
+                style={{ background: '#1a2035', border: `1px solid ${cat.accent}22` }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = `${cat.accent}15`;
-                  e.currentTarget.style.boxShadow = `0 0 12px ${cat.accent}33`;
+                  e.currentTarget.style.borderColor = `${cat.accent}66`;
+                  e.currentTarget.style.boxShadow = `0 0 25px ${cat.accent}15`;
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = `${cat.accent}22`;
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                EXPLORE
-              </a>
-            </div>
-          ))}
-        </div>
+                <div className="mb-5 transition-all duration-300 group-hover:scale-110"
+                  style={{ filter: `drop-shadow(0 0 6px ${cat.accent}66)` }}>
+                  {cat.icon}
+                </div>
+                <h3 className="font-cinzel font-semibold mb-3" style={{ color: cat.accent, fontSize: '0.95rem', lineHeight: 1.4 }}>
+                  {cat.label}
+                </h3>
+                <p className="font-raleway text-xs leading-relaxed mb-6" style={{ color: '#7a8aaa' }}>
+                  {cat.description}
+                </p>
+                <a
+                  href={cat.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-cinzel text-xs tracking-widest px-5 py-2 rounded mt-auto transition-all duration-300"
+                  style={{
+                    color: cat.accent,
+                    border: `1px solid ${cat.accent}44`,
+                    background: 'transparent',
+                    letterSpacing: '0.12em',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = `${cat.accent}15`;
+                    e.currentTarget.style.boxShadow = `0 0 12px ${cat.accent}33`;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  EXPLORE
+                </a>
+              </div>
+            ))}
+          </div>
 
-        {/* Big CTA */}
-        <div className="text-center mt-14">
-          <a
-            href="https://www.youtube.com/@TheFormlessGuide/playlists"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="micro-label px-10 py-4 rounded inline-block transition-all duration-300"
-            style={{
-              color: '#CC00FF',
-              border: '1.5px solid rgba(204,0,255,0.5)',
-              background: 'transparent',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'rgba(204,0,255,0.08)';
-              e.currentTarget.style.boxShadow = '0 0 30px rgba(204,0,255,0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            EXPLORE FULL CATALOG
-          </a>
-        </div>
+          {/* Big CTA */}
+          <div className="text-center mt-14">
+            <a
+              href="https://www.youtube.com/@TheFormlessGuide/playlists"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-cinzel text-sm tracking-widest px-10 py-4 rounded inline-block transition-all duration-300"
+              style={{
+                color: '#CC00FF',
+                border: '1.5px solid rgba(204,0,255,0.5)',
+                background: 'transparent',
+                letterSpacing: '0.2em',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(204,0,255,0.08)';
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(204,0,255,0.25)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              EXPLORE FULL CATALOG
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>

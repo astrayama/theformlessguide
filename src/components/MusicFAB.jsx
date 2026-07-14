@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 
 const PLAYLIST_ID = 'PLaJVlsirVzKX2G9fblGc2Y_f-ncAYsbCx';
 const PLAYLIST_URL = `https://youtube.com/playlist?list=${PLAYLIST_ID}`;
-const EMBED_URL = `https://www.youtube-nocookie.com/embed/videoseries?list=${PLAYLIST_ID}&rel=0`;
+const EMBED_URL = `https://www.youtube-nocookie.com/embed/videoseries?list=${PLAYLIST_ID}&rel=0&enablejsapi=1`;
 
 // Original sticker — a pair of wireless earbuds, music drifting between them.
 function EarbudsSticker({ size = 34 }) {
@@ -34,25 +34,75 @@ function EarbudsSticker({ size = 34 }) {
 
 export default function MusicFAB() {
   const [open, setOpen] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
+  const widgetRef = useRef(null);
+  const fabRef = useRef(null);
+  const iframeRef = useRef(null);
+
+  // Pause the embed via the YouTube IFrame API — the iframe stays mounted,
+  // so the current song and position survive until the player reopens.
+  const pausePlayback = useCallback(() => {
+    iframeRef.current?.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
+      '*'
+    );
+  }, []);
+
+  const close = useCallback(() => {
+    pausePlayback();
+    setOpen(false);
+  }, [pausePlayback]);
+
+  const toggle = useCallback(() => {
+    if (open) close();
+    else {
+      setHasOpened(true);
+      setOpen(true);
+    }
+  }, [open, close]);
+
+  // Clicking anywhere outside the widget (or pressing Escape) closes it,
+  // pausing playback but keeping the seeker's place in the playlist.
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = e => {
+      if (widgetRef.current?.contains(e.target) || fabRef.current?.contains(e.target)) return;
+      close();
+    };
+    const onKeyDown = e => {
+      if (e.key === 'Escape') close();
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open, close]);
 
   return (
     <>
-      {/* Player widget */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="glass fixed z-40 overflow-hidden right-5 md:right-24"
-            style={{
-              bottom: '96px',
-              width: 'min(90vw, 340px)',
-              borderRadius: '14px',
-              transformOrigin: 'bottom right',
-            }}
-            initial={{ opacity: 0, scale: 0.85, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 12 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-          >
+      {/* Player widget — stays mounted once opened so playback state persists */}
+      {hasOpened && (
+        <motion.div
+          ref={widgetRef}
+          className="glass fixed z-40 overflow-hidden right-5 md:right-24"
+          style={{
+            bottom: '96px',
+            width: 'min(90vw, 340px)',
+            borderRadius: '14px',
+            transformOrigin: 'bottom right',
+            pointerEvents: open ? 'auto' : 'none',
+          }}
+          initial={{ opacity: 0, scale: 0.85, y: 16 }}
+          animate={
+            open
+              ? { opacity: 1, scale: 1, y: 0, visibility: 'visible' }
+              : { opacity: 0, scale: 0.9, y: 12, transitionEnd: { visibility: 'hidden' } }
+          }
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+          aria-hidden={!open}
+        >
             {/* Header */}
             <div
               className="flex items-center gap-3 px-4 py-3"
@@ -75,7 +125,7 @@ export default function MusicFAB() {
                 </div>
               </div>
               <button
-                onClick={() => setOpen(false)}
+                onClick={close}
                 aria-label="Close player"
                 className="font-sans transition-colors"
                 style={{ color: '#8a96b8', fontSize: '1.3rem', lineHeight: 1 }}
@@ -89,6 +139,7 @@ export default function MusicFAB() {
             {/* Player */}
             <div style={{ aspectRatio: '16 / 9', background: 'rgba(10,14,26,0.6)' }}>
               <iframe
+                ref={iframeRef}
                 src={EMBED_URL}
                 title="Walking Meditations playlist"
                 width="100%"
@@ -113,13 +164,13 @@ export default function MusicFAB() {
                 OPEN FULL PLAYLIST
               </a>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
+      )}
 
       {/* FAB */}
       <motion.button
-        onClick={() => setOpen(o => !o)}
+        ref={fabRef}
+        onClick={toggle}
         aria-label={open ? 'Close music player' : 'Open music player'}
         className="glass fab-pulse fixed z-40 flex items-center justify-center right-5 md:right-24"
         style={{

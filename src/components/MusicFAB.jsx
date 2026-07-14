@@ -5,35 +5,28 @@ const PLAYLIST_ID = 'PLaJVlsirVzKX2G9fblGc2Y_f-ncAYsbCx';
 const PLAYLIST_URL = `https://youtube.com/playlist?list=${PLAYLIST_ID}`;
 const EMBED_URL = `https://www.youtube-nocookie.com/embed/videoseries?list=${PLAYLIST_ID}&rel=0`;
 
-// Original sticker — a walker mid-stride, headphones on, notes rising.
-function WalkerSticker({ size = 34 }) {
+// Original sticker — a pair of wireless earbuds, music drifting between them.
+function EarbudsSticker({ size = 34 }) {
   return (
     <svg viewBox="0 0 48 48" width={size} height={size} fill="none" aria-hidden="true">
-      {/* head */}
-      <circle cx="22" cy="12" r="5" stroke="#f2ecdf" strokeWidth="1.8" />
-      {/* earbuds — left and right, with short stems */}
-      <circle cx="17.2" cy="12.4" r="1.5" fill="#00f5d4" />
-      <path d="M17 13.8 L16.4 16.2" stroke="#00f5d4" strokeWidth="1.4" strokeLinecap="round" />
-      <circle cx="26.8" cy="12.4" r="1.5" fill="#00f5d4" />
-      <path d="M27 13.8 L27.6 16.2" stroke="#00f5d4" strokeWidth="1.4" strokeLinecap="round" />
-      {/* torso, leaning into the walk */}
-      <path d="M22 17.5 L21 28" stroke="#f2ecdf" strokeWidth="1.8" strokeLinecap="round" />
-      {/* arms swinging */}
-      <path d="M21.7 20.5 Q25.5 21.5 27.5 25.5" stroke="#f2ecdf" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-      <path d="M21.7 20.5 Q18 23 16.5 26.5" stroke="#f2ecdf" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-      {/* legs mid-stride */}
-      <path d="M21 28 Q25 31 26.5 36 L29 36.6" stroke="#f2ecdf" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-      <path d="M21 28 Q19.5 32 15.5 35 L13.5 34.6" stroke="#f2ecdf" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-      {/* music notes drifting up */}
+      {/* left earbud */}
+      <circle cx="15.5" cy="20" r="4.6" stroke="#f2ecdf" strokeWidth="1.8" />
+      <circle cx="17" cy="20" r="1.6" fill="#00f5d4" />
+      <path d="M15.5 24.8 L15 33.5" stroke="#f2ecdf" strokeWidth="3" strokeLinecap="round" />
+      {/* right earbud */}
+      <circle cx="32.5" cy="20" r="4.6" stroke="#f2ecdf" strokeWidth="1.8" />
+      <circle cx="31" cy="20" r="1.6" fill="#00f5d4" />
+      <path d="M32.5 24.8 L33 33.5" stroke="#f2ecdf" strokeWidth="3" strokeLinecap="round" />
+      {/* music notes drifting up between the buds */}
       <g className="fab-note">
-        <path d="M35 16 L35 9.5 L38.5 8.5 L38.5 14.5" stroke="#00f5d4" strokeWidth="1.3" strokeLinecap="round" fill="none" />
-        <ellipse cx="34" cy="16.3" rx="1.6" ry="1.2" fill="#00f5d4" />
-        <ellipse cx="37.5" cy="14.8" rx="1.6" ry="1.2" fill="#00f5d4" />
+        <path d="M21.5 18 L21.5 11.5 L25 10.5 L25 16.5" stroke="#00f5d4" strokeWidth="1.3" strokeLinecap="round" fill="none" />
+        <ellipse cx="20.5" cy="18.3" rx="1.6" ry="1.2" fill="#00f5d4" />
+        <ellipse cx="24" cy="16.8" rx="1.6" ry="1.2" fill="#00f5d4" />
       </g>
       <g className="fab-note fab-note--late">
-        <path d="M41 8 L41 3.5" stroke="#00f5d4" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M41 3.5 Q43 4 43.5 5.5" stroke="#00f5d4" strokeWidth="1.2" strokeLinecap="round" fill="none" />
-        <ellipse cx="40" cy="8.3" rx="1.4" ry="1.05" fill="#00f5d4" />
+        <path d="M28.5 9 L28.5 4.5" stroke="#00f5d4" strokeWidth="1.2" strokeLinecap="round" />
+        <path d="M28.5 4.5 Q30.5 5 31 6.5" stroke="#00f5d4" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+        <ellipse cx="27.5" cy="9.3" rx="1.4" ry="1.05" fill="#00f5d4" />
       </g>
     </svg>
   );
@@ -65,7 +58,7 @@ export default function MusicFAB() {
               className="flex items-center gap-3 px-4 py-3"
               style={{ borderBottom: '0.5px solid rgba(255,255,255,0.14)' }}
             >
-              <WalkerSticker size={26} />
+              <EarbudsSticker size={26} />
               <div className="flex-1 text-left">
                 <p className="font-sans font-medium text-sm" style={{ color: '#f2ecdf' }}>
                   Walking Meditations
@@ -143,7 +136,7 @@ export default function MusicFAB() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
       >
-        <WalkerSticker />
+        <EarbudsSticker />
       </motion.button>
     </>
   );

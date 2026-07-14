@@ -11,6 +11,7 @@ import StillnessSection from './components/StillnessSection';
 import CatalogSection from './components/CatalogSection';
 import ShopSection from './components/ShopSection';
 import Footer from './components/Footer';
+import MusicFAB from './components/MusicFAB';
 import { Analytics } from "@vercel/analytics/react"
 
 const SECTIONS = ['hero', 'guides', 'moments', 'about', 'stillness', 'catalog', 'shop'];
@@ -84,6 +85,10 @@ export default function App() {
         <Footer />
         
       </main>
+
+      {/* Floating music player */}
+      <MusicFAB />
+
       <Analytics />
     </div>
   );

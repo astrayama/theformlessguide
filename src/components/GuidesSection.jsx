@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import FindYourGuide from './FindYourGuide';
 
 const guides = [
   {
@@ -372,6 +373,9 @@ export default function GuidesSection() {
             </motion.p>
           </AnimatePresence>
         </div>
+
+        {/* Assessment — collapsed behind a button; routes into the chat modals */}
+        <FindYourGuide guides={guides} onSelectGuide={id => setActiveModal(id)} />
         </motion.div>
       </div>
 

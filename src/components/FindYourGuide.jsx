@@ -145,7 +145,7 @@ export default function FindYourGuide({ guides, onSelectGuide }) {
   };
 
   return (
-    <div className="mt-20 text-center">
+    <div className="mb-16 text-center">
       <AnimatePresence mode="wait">
         {!open ? (
           <motion.div

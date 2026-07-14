@@ -13,7 +13,7 @@ import ShopSection from './components/ShopSection';
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/react"
 
-const SECTIONS = ['hero', 'guides', 'moments', 'about', 'stillness', 'catalog', 'shop'];
+const SECTIONS = ['hero', 'guides', 'catalog', 'moments', 'about', 'stillness', 'shop'];
 
 function useActiveSection() {
   const [active, setActive] = useState('hero');
@@ -76,10 +76,10 @@ export default function App() {
       <main className="relative z-10 md:px-16">
         <HeroSection />
         <GuidesSection />
+        <CatalogSection />
         <MomentsSection />
         <AboutSection />
         <StillnessSection />
-        <CatalogSection />
         <ShopSection />
         <Footer />
         

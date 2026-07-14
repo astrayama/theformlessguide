@@ -11,10 +11,11 @@ function WalkerSticker({ size = 34 }) {
     <svg viewBox="0 0 48 48" width={size} height={size} fill="none" aria-hidden="true">
       {/* head */}
       <circle cx="22" cy="12" r="5" stroke="#f2ecdf" strokeWidth="1.8" />
-      {/* headphones — band and cups */}
-      <path d="M16.5 10.5 A6.8 6.8 0 0 1 27.5 10.5" stroke="#00f5d4" strokeWidth="1.8" strokeLinecap="round" />
-      <circle cx="16.8" cy="12.6" r="2" fill="#00f5d4" />
-      <circle cx="27.2" cy="12.6" r="2" fill="#00f5d4" />
+      {/* earbuds — left and right, with short stems */}
+      <circle cx="17.2" cy="12.4" r="1.5" fill="#00f5d4" />
+      <path d="M17 13.8 L16.4 16.2" stroke="#00f5d4" strokeWidth="1.4" strokeLinecap="round" />
+      <circle cx="26.8" cy="12.4" r="1.5" fill="#00f5d4" />
+      <path d="M27 13.8 L27.6 16.2" stroke="#00f5d4" strokeWidth="1.4" strokeLinecap="round" />
       {/* torso, leaning into the walk */}
       <path d="M22 17.5 L21 28" stroke="#f2ecdf" strokeWidth="1.8" strokeLinecap="round" />
       {/* arms swinging */}

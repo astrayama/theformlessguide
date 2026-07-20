@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import FindYourGuide from './FindYourGuide';
 
 const guides = [
   {
@@ -292,6 +293,9 @@ export default function GuidesSection() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
+          {/* Assessment — collapsed behind a button; routes into the chat modals */}
+          <FindYourGuide guides={guides} onSelectGuide={id => setActiveModal(id)} />
+
           <div className="text-center mb-16">
             <h2 className="font-cinzel font-medium text-cream mb-4"
               style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
@@ -372,6 +376,7 @@ export default function GuidesSection() {
             </motion.p>
           </AnimatePresence>
         </div>
+
         </motion.div>
       </div>
 

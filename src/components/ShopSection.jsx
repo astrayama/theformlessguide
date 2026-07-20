@@ -79,7 +79,7 @@ export default function ShopSection() {
             </p>
 
             <a
-              href="https://theformlessguide.printful.me/"
+              href="https://theformlessguide.printful.me/" 
               target="_blank"
               rel="noopener noreferrer"
               className="micro-label px-12 py-4 rounded inline-block transition-all duration-300"

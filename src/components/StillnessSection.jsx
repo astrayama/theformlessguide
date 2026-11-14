@@ -1,12 +1,18 @@
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import SectionHeading from './SectionHeading';
+import { Arrow } from './Icons';
+import { PRACTICES } from '../library';
+
+const BLUE = '#1a5fb4';
 
 export default function StillnessSection() {
   const [burden, setBurden] = useState('');
   const [releasing, setReleasing] = useState(null); // text being released
   const [released, setReleased] = useState(false);
-  const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const reduced = useReducedMotion();
 
   const handleRelease = useCallback(() => {
     if (!burden.trim()) return;
@@ -15,7 +21,7 @@ export default function StillnessSection() {
     setTimeout(() => {
       setReleasing(null);
       setReleased(true);
-    }, 2200);
+    }, 2400);
   }, [burden]);
 
   const handleReset = useCallback(() => {
@@ -30,163 +36,128 @@ export default function StillnessSection() {
 
   return (
     <section id="stillness" className="relative py-28 px-6">
-      {/* Top separator */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16"
-        style={{ background: 'linear-gradient(to bottom, transparent, rgba(0,153,255,0.4), transparent)' }} />
+      <motion.div
+        ref={ref}
+        className="max-w-6xl mx-auto"
+        initial={{ opacity: 0, y: 14 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.9, ease: 'easeOut' }}
+      >
+        <SectionHeading
+          section="stillness"
+          align="center"
+          title={<>A moment of <em>stillness</em></>}
+          sub="Type a burden you wish to release below. Watch it fade into the void."
+        />
 
-      <div className="max-w-2xl mx-auto text-center">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: 'easeOut' }}
-        >
-          <p className="micro-label flex items-center justify-center gap-3 mb-5" style={{ color: '#5cb8ff' }}>
-            <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full"
-              style={{ background: '#5cb8ff', boxShadow: '0 0 10px #5cb8ff' }} />
-            THROAT
-          </p>
-          <h2 className="font-cinzel font-medium text-cream mb-4"
-            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
-            A Moment of Stillness
-          </h2>
-          <p className="font-sans text-secondary mb-14 max-w-md mx-auto" style={{ fontSize: '1.05rem', lineHeight: 1.6 }}>
-            Type a burden you wish to release below. Watch it fade into the void.
-          </p>
-        </motion.div>
-
-        {/* The void area */}
-        <div className="relative min-h-48 flex flex-col items-center justify-center">
-          {/* Void visual — concentric rings */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            {[1.4, 1, 0.6, 0.3].map((scale, i) => (
-              <div key={i} className="absolute rounded-full"
-                style={{
-                  width: `${200 * scale}px`,
-                  height: `${200 * scale}px`,
-                  border: '1px solid rgba(0,153,255,0.1)',
-                  opacity: 1 - i * 0.2,
-                }} />
+        {/* The ritual */}
+        <div className="sheet relative max-w-2xl mx-auto overflow-hidden px-6 sm:px-12 py-14 text-center">
+          {/* Ink rings */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+            {[420, 300, 190, 90].map((d, i) => (
+              <div key={d} className="absolute rounded-full"
+                style={{ width: d, height: d, border: `1px solid rgba(26,95,180,${0.1 + i * 0.05})` }} />
             ))}
-            <div className="w-4 h-4 rounded-full" style={{ background: 'rgba(0,153,255,0.2)' }} />
           </div>
 
-          {/* Floating released text animation */}
-          <AnimatePresence>
-            {releasing && (
-              <motion.p
-                className="absolute font-sans italic pointer-events-none z-10"
-                style={{ color: '#0099ff', fontSize: '1.1rem', maxWidth: '80%', textAlign: 'center' }}
-                initial={{ opacity: 1, y: 0, scale: 1 }}
-                animate={{ opacity: 0, y: -120, scale: 0.7 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 2, ease: 'easeOut' }}
-              >
-                "{releasing}"
-              </motion.p>
-            )}
-          </AnimatePresence>
+          <div className="relative min-h-[190px] flex flex-col items-center justify-center">
+            {/* The burden, written in ink, then dissolving */}
+            <AnimatePresence>
+              {releasing && (
+                <motion.p
+                  className="display absolute pointer-events-none text-ink"
+                  style={{ fontSize: '1.6rem', fontStyle: 'italic', maxWidth: '90%' }}
+                  initial={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                  animate={{ opacity: 0, y: reduced ? 0 : -90, scale: reduced ? 1 : 1.25, filter: 'blur(14px)' }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 2.2, ease: 'easeOut' }}
+                >
+                  "{releasing}"
+                </motion.p>
+              )}
+            </AnimatePresence>
 
-          {/* Input field — shown when not yet released */}
-          <AnimatePresence mode="wait">
-            {!released ? (
-              <motion.div
-                key="input"
-                className="relative z-10 w-full flex flex-col items-center gap-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: releasing ? 0 : 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                <div className="glass w-full max-w-lg rounded-xl px-6 pt-5 pb-4">
+            <AnimatePresence mode="wait">
+              {!released ? (
+                <motion.div
+                  key="input"
+                  className="w-full flex flex-col items-center gap-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: releasing ? 0 : 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
+                >
                   <input
                     type="text"
                     value={burden}
-                    onChange={e => setBurden(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleRelease()}
+                    onChange={(e) => setBurden(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleRelease()}
                     placeholder="What weighs on you today?"
-                    disabled={!!releasing}
                     aria-label="A burden you wish to release"
-                    className="w-full bg-transparent font-sans text-center text-cream text-lg outline-none placeholder-muted pb-3"
-                    style={{
-                      borderBottom: '1px solid rgba(92,184,255,0.7)',
-                      caretColor: '#5cb8ff',
-                      color: '#f2ecdf',
-                    }}
+                    disabled={!!releasing}
+                    className="ink-input display w-full max-w-md bg-transparent text-center text-ink outline-none pb-3"
+                    style={{ fontSize: '1.5rem', fontStyle: 'italic', borderBottom: `1.5px solid ${BLUE}`, caretColor: BLUE }}
                   />
-                </div>
-                <button
-                  onClick={handleRelease}
-                  disabled={!burden.trim() || !!releasing}
-                  className="micro-label px-8 py-3.5 rounded transition-all duration-300"
-                  style={{
-                    color: '#5cb8ff',
-                    border: '1px solid rgba(92,184,255,0.6)',
-                    background: 'transparent',
-                    opacity: burden.trim() ? 1 : 0.65,
-                  }}
-                  onMouseEnter={e => {
-                    if (burden.trim()) {
-                      e.currentTarget.style.background = 'rgba(0,153,255,0.08)';
-                      e.currentTarget.style.boxShadow = '0 0 20px rgba(0,153,255,0.3)';
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
+                  <button
+                    type="button"
+                    onClick={handleRelease}
+                    disabled={!burden.trim() || !!releasing}
+                    className="btn-ink micro-label"
+                    style={{ opacity: burden.trim() ? 1 : 0.55, cursor: burden.trim() ? 'pointer' : 'default' }}
+                  >
+                    RELEASE TO THE VOID
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="released"
+                  className="flex flex-col items-center gap-8"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
                 >
-                  RELEASE TO THE VOID
-                </button>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="released"
-                className="relative z-10 flex flex-col items-center gap-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-              >
-                <p className="font-cinzel text-center leading-relaxed"
-                  style={{
-                    color: '#f2ecdf',
-                    fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-                    textShadow: '0 0 20px rgba(0,153,255,0.3)',
-                    maxWidth: '480px',
-                  }}>
-                  The burden is released.<br />
-                  <span style={{ color: '#0099ff' }}>Now, master the space it left behind.</span>
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 items-center">
-                  <button
-                    onClick={scrollToGuides}
-                    className="micro-label px-8 py-3.5 rounded transition-all duration-300"
-                    style={{
-                      color: '#0099ff',
-                      border: '1px solid rgba(0,153,255,0.5)',
-                      background: 'rgba(0,153,255,0.08)',
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 20px rgba(0,153,255,0.3)'}
-                    onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
-                  >
-                    MASTER THE VOID
-                  </button>
-                  <button
-                    onClick={handleReset}
-                    className="font-sans text-sm transition-colors"
-                    style={{ color: '#8a96b8' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#f2ecdf'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#8a96b8'}
-                  >
-                    Release another
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  <p className="display text-ink" style={{ fontSize: 'clamp(1.3rem, 2.8vw, 1.7rem)', lineHeight: 1.35, maxWidth: '460px' }}>
+                    The burden is released.<br />
+                    <em style={{ color: BLUE }}>Now, master the space it left behind.</em>
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 items-center">
+                    <button type="button" onClick={scrollToGuides} className="btn-ink micro-label">
+                      MASTER THE VOID
+                    </button>
+                    <button type="button" onClick={handleReset} className="ink-link font-sans text-sm">
+                      Release another
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+
+        {/* Guided practice */}
+        <div className="max-w-4xl mx-auto mt-16">
+          <p className="micro-label text-fog mb-2 text-center sm:text-left">KEEP PRACTICING</p>
+          <ul>
+            {PRACTICES.map((p, i) => (
+              <li key={p.title}>
+                <a href={p.href} target="_blank" rel="noopener noreferrer" className="ink-row" style={{ '--c': BLUE }}>
+                  <span className="micro-label" style={{ color: BLUE }} aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span>
+                    <span className="display block text-ink" style={{ fontSize: '1.45rem' }}>{p.title}</span>
+                    <span className="block font-sans text-stone mt-1.5" style={{ fontSize: '1rem', lineHeight: 1.5 }}>{p.note}</span>
+                  </span>
+                  <span className="flex items-center gap-4">
+                    <span className="micro-label text-fog hidden sm:inline">{p.length.toUpperCase()}</span>
+                    <span className="row-arrow"><Arrow className="w-5 h-5" /></span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </motion.div>
     </section>
   );
 }

@@ -1,23 +1,24 @@
-// Shared heading for the redesigned sections. The eyebrow names the chakra the
-// right-hand nav lights up for this section, so the rail and the page agree.
-export default function SectionHeading({ eyebrow, color = '#00f5d4', title, sub, align = 'left', actionsClassName = '', children }) {
+import { sectionById } from '../library';
+
+// Shared heading. The eyebrow names the chakra this section sits on, in the
+// same color as its dot in the header.
+export default function SectionHeading({ section, title, sub, align = 'left', actionsClassName = '', children }) {
+  const meta = section ? sectionById(section) : null;
   const centered = align === 'center';
   return (
-    <div className={`flex flex-col gap-6 mb-12 ${centered ? 'items-center text-center' : 'md:flex-row md:items-end md:justify-between'}`}>
+    <div className={`flex flex-col gap-6 mb-12 ${centered ? 'items-center text-center' : 'lg:flex-row lg:items-end lg:justify-between'}`}>
       <div className="max-w-2xl">
-        {eyebrow && (
-          <p className={`micro-label flex items-center gap-3 mb-5 ${centered ? 'justify-center' : ''}`} style={{ color }}>
-            <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full"
-              style={{ background: color, boxShadow: `0 0 10px ${color}` }} />
-            {eyebrow}
+        {meta && (
+          <p className={`micro-label flex items-center gap-3 mb-5 ${centered ? 'justify-center' : ''}`} style={{ color: meta.ink }}>
+            <span aria-hidden="true" className="inline-block w-2.5 h-2.5 rounded-full" style={{ background: meta.color }} />
+            {meta.chakra.toUpperCase()}
           </p>
         )}
-        <h2 className="font-cinzel font-medium text-cream"
-          style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em', lineHeight: 1.15 }}>
+        <h2 className="display text-ink" style={{ fontSize: 'clamp(2.3rem, 5.2vw, 3.9rem)' }}>
           {title}
         </h2>
         {sub && (
-          <p className="font-sans text-secondary mt-4" style={{ fontSize: '1.05rem', lineHeight: 1.6 }}>
+          <p className="font-sans text-stone mt-5" style={{ fontSize: '1.1rem', lineHeight: 1.6 }}>
             {sub}
           </p>
         )}

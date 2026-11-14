@@ -1,9 +1,41 @@
-// Every playlist link on the site lives here, so a renamed or removed
-// playlist is a one-line fix. IDs match youtube.com/@TheFormlessGuide/playlists.
+// Every outbound link and playlist on the site lives here, so a renamed or
+// removed playlist is a one-line fix. IDs match youtube.com/@TheFormlessGuide.
 
-export const CHANNEL_PLAYLISTS_URL = 'https://www.youtube.com/@TheFormlessGuide/playlists';
+export const YOUTUBE_URL = 'https://www.youtube.com/@TheFormlessGuide';
+export const CHANNEL_PLAYLISTS_URL = `${YOUTUBE_URL}/playlists`;
+export const SUBSCRIBE_URL = `${YOUTUBE_URL}?sub_confirmation=1`;
+export const SPOTIFY_URL = 'https://open.spotify.com/show/2oPHFNP3WpLH0Kg8jQsl3I';
+export const TIKTOK_URL = 'https://www.tiktok.com/@theformlessguide';
+export const INSTAGRAM_URL = 'https://www.instagram.com/theformlessguide/';
+export const PINTEREST_URL = 'https://www.pinterest.com/theformlessguide/';
+export const JOURNAL_URL = 'https://yggdrasil-journal.lovable.app/';
+export const STORE_URL = 'https://theformlessguide.printful.me';
 
 export const playlistUrl = (id) => `https://www.youtube.com/playlist?list=${id}`;
+export const watchUrl = (videoId) => `https://www.youtube.com/watch?v=${videoId}`;
+
+// Where the Guide can be found, in the order the footer lists them.
+export const CHANNELS = [
+  { name: 'YouTube', href: YOUTUBE_URL },
+  { name: 'Spotify', href: SPOTIFY_URL },
+  { name: 'TikTok', href: TIKTOK_URL },
+  { name: 'Instagram', href: INSTAGRAM_URL },
+  { name: 'Pinterest', href: PINTEREST_URL },
+  { name: 'Yggdrasil Journal', href: JOURNAL_URL },
+];
+
+// The seven sections, mapped root to crown. The header dots, the page tint
+// and each section's eyebrow all read from this list.
+export const SECTIONS = [
+  { id: 'hero', nav: null, chakra: 'Root', color: '#ff4d4d', ink: '#b3261e' },
+  { id: 'guides', nav: 'Guides', chakra: 'Sacral', color: '#ff8a3d', ink: '#b3540a' },
+  { id: 'teachings', nav: 'Teachings', chakra: 'Solar Plexus', color: '#ffc93c', ink: '#8a5f00' },
+  { id: 'about', nav: 'About', chakra: 'Heart', color: '#3ccf7e', ink: '#1c7447' },
+  { id: 'stillness', nav: 'Practice', chakra: 'Throat', color: '#3c9bff', ink: '#1a5fb4' },
+  { id: 'catalog', nav: 'Library', chakra: 'Third Eye', color: '#7a5cff', ink: '#553bc0' },
+  { id: 'shop', nav: 'Support', chakra: 'Crown', color: '#d65cff', ink: '#9a2bb5' },
+];
+export const sectionById = (id) => SECTIONS.find((s) => s.id === id) || SECTIONS[0];
 
 // The beginner playlist. The hero's BEGIN THE JOURNEY button opens this.
 export const START_HERE = {
@@ -11,15 +43,49 @@ export const START_HERE = {
   video: 'WgpEt_eIt24',
 };
 
-// Shorts playlist behind the Formless Moments section.
+// Shorts playlist behind Formless Moments.
 export const MOMENTS_PLAYLIST_ID = 'PLg1ZRqch8VjMwPQ9NRigFX7DUlXi9aqHJ';
+
+// The channel's uploads playlist. Latest episodes are read from it.
+export const UPLOADS_PLAYLIST_ID = 'UUzH849dsPIS7fzkTw7FFUlQ';
+
+// Shown when the YouTube API key is missing or the request fails.
+export const FALLBACK_EPISODES = [
+  { id: 'PPRuOjwV1PA', title: 'Your Brain Cannot Feel Pain. So Why Do You Suffer?' },
+  { id: 'PWvU-1isQew', title: 'Art Of Allowance: The Four Words You Need To Know' },
+  { id: 'Nv0AppMbmvs', title: 'Empty Your Cup: A Full Cup Cannot Learn (How to Build the Mind of a Seeker)' },
+  { id: 'Mn7ntznXBjQ', title: 'Carl Jung Shadow Work: The Part of You You Fear Holds the Key to Clarity' },
+  { id: 'I9dOguO3a3k', title: 'Autumn Reflection on Letting Go: How Adversity Refines You and Why Trying Is Enough' },
+];
+
+// Guided practice, linked from the Practice section.
+export const PRACTICES = [
+  {
+    title: 'One breath',
+    note: 'In for four, hold for two, out for six. The episode on why it works.',
+    href: watchUrl('Y7WRhS2VvHI'),
+    length: 'Episode',
+  },
+  {
+    title: 'Quick guided meditations',
+    note: 'Five to fifteen minutes for busy days.',
+    href: playlistUrl('PLg1ZRqch8VjNlu0KLPI58iANTLvuoFcvz'),
+    length: 'Playlist',
+  },
+  {
+    title: 'Guided meditation series',
+    note: 'A guided journey to consciousness.',
+    href: playlistUrl('PLg1ZRqch8VjP3fMGKgO_yK-3An5nY0Bxz'),
+    length: 'Playlist',
+  },
+];
 
 export const PATHS = [
   {
     key: 'begin',
     tab: 'Begin',
     intent: 'I am new here',
-    color: '#00f5d4',
+    color: '#0f8f7c',
     playlists: [
       {
         id: START_HERE.id,
@@ -45,7 +111,7 @@ export const PATHS = [
     key: 'meditate',
     tab: 'Meditate',
     intent: 'I want to sit',
-    color: '#5cb8ff',
+    color: '#1a5fb4',
     playlists: [
       {
         id: 'PLg1ZRqch8VjNlu0KLPI58iANTLvuoFcvz',
@@ -71,7 +137,7 @@ export const PATHS = [
     key: 'mind',
     tab: 'Mind and Shadow',
     intent: 'I want to understand my mind',
-    color: '#b79bff',
+    color: '#553bc0',
     playlists: [
       {
         id: 'PLg1ZRqch8VjN9GvGXUSa52Cwtrq1B--6T',
@@ -103,7 +169,7 @@ export const PATHS = [
     key: 'energy',
     tab: 'Energy',
     intent: 'I want to work with energy',
-    color: '#ff8fcf',
+    color: '#b3287a',
     playlists: [
       {
         id: 'PLg1ZRqch8VjP1fSfh4OEstMTMjN6ERJA9',
@@ -141,7 +207,7 @@ export const PATHS = [
     key: 'cosmos',
     tab: 'Cosmos',
     intent: 'I want the big picture',
-    color: '#ffd166',
+    color: '#8a5f00',
     playlists: [
       {
         id: 'PLg1ZRqch8VjOjhbFnuHXXl6LkA35MOL6E',

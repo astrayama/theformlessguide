@@ -86,7 +86,7 @@ export default function MusicFAB() {
       {hasOpened && (
         <motion.div
           ref={widgetRef}
-          className="glass fixed z-40 overflow-hidden right-5 md:right-24"
+          className="night fixed z-40 overflow-hidden right-5 md:right-8"
           style={{
             bottom: '96px',
             width: 'min(90vw, 340px)',
@@ -172,7 +172,7 @@ export default function MusicFAB() {
         ref={fabRef}
         onClick={toggle}
         aria-label={open ? 'Close music player' : 'Open music player'}
-        className="glass fab-pulse fixed z-40 flex items-center justify-center right-5 md:right-24"
+        className="night fab-pulse fixed z-40 flex items-center justify-center right-5 md:right-8"
         style={{
           bottom: '24px',
           width: '58px',

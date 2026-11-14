@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { useWalkingTracks } from '../youtube';
+import { WALKING_PLAYLIST_ID } from '../walkingTracks';
 
-const PLAYLIST_ID = 'PLaJVlsirVzKX2G9fblGc2Y_f-ncAYsbCx';
+const PLAYLIST_ID = WALKING_PLAYLIST_ID;
 const PLAYLIST_URL = `https://youtube.com/playlist?list=${PLAYLIST_ID}`;
 const EMBED_URL = `https://www.youtube-nocookie.com/embed/videoseries?list=${PLAYLIST_ID}&rel=0&enablejsapi=1`;
 
@@ -32,18 +34,63 @@ function SealGlyph({ playing }) {
 export default function MusicFAB() {
   const [open, setOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
+  const [playing, setPlaying] = useState(false);
+  const tracks = useWalkingTracks();
   const widgetRef = useRef(null);
   const fabRef = useRef(null);
   const iframeRef = useRef(null);
+  const listRef = useRef(null);
 
-  // Pause the embed via the YouTube IFrame API. The iframe stays mounted,
-  // so the current song and position survive until the player reopens.
-  const pausePlayback = useCallback(() => {
-    iframeRef.current?.contentWindow?.postMessage(
-      JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }),
-      '*'
-    );
+  // Talk to the embed through the YouTube IFrame API's postMessage channel.
+  const send = useCallback((message) => {
+    iframeRef.current?.contentWindow?.postMessage(JSON.stringify(message), '*');
   }, []);
+  const command = useCallback((func, args = []) => send({ event: 'command', func, args }), [send]);
+
+  // Pause the embed. The iframe stays mounted, so the current song and
+  // position survive until the player reopens.
+  const pausePlayback = useCallback(() => command('pauseVideo'), [command]);
+
+  // Play the chosen track, with the rest of the playlist queued after it.
+  const playTrack = useCallback(
+    (index) => {
+      command('loadPlaylist', [tracks.map((t) => t.id), index]);
+      setCurrentId(tracks[index].id);
+      setPlaying(true);
+    },
+    [command, tracks]
+  );
+
+  // Ask the embed to report what it is playing, so the list can mark it.
+  const listen = useCallback(() => {
+    send({ event: 'listening', id: 'walking', channel: 'widget' });
+  }, [send]);
+
+  useEffect(() => {
+    const onMessage = (e) => {
+      if (e.source !== iframeRef.current?.contentWindow) return;
+      let data;
+      try {
+        data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+      } catch {
+        return;
+      }
+      const info = data?.info;
+      if (!info) return;
+      if (info.videoData?.video_id) setCurrentId(info.videoData.video_id);
+      if (typeof info.playerState === 'number') setPlaying(info.playerState === 1 || info.playerState === 3);
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
+  // Keep the playing track in view inside the list.
+  useEffect(() => {
+    if (!open || !currentId || !listRef.current) return;
+    const row = listRef.current.querySelector('[data-current="true"]');
+    if (row) listRef.current.scrollTop = row.offsetTop - listRef.current.clientHeight / 2 + row.clientHeight / 2;
+  }, [open, currentId]);
 
   const close = useCallback(() => {
     pausePlayback();
@@ -137,7 +184,47 @@ export default function MusicFAB() {
               style={{ border: 'none', display: 'block' }}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              onLoad={() => { listen(); setTimeout(listen, 1200); }}
             />
+          </div>
+
+          {/* Track list: choose any song in the playlist */}
+          <div className="px-3 pt-4">
+            <p className="micro-label text-fog px-2 mb-2" style={{ fontSize: '10.5px' }}>
+              CHOOSE A TRACK · {tracks.length}
+            </p>
+            <ol ref={listRef} className="music-list" aria-label="Tracks in the Walking Meditations playlist">
+              {tracks.map((t, i) => {
+                const current = t.id === currentId;
+                return (
+                  <li key={t.id}>
+                    <button
+                      type="button"
+                      className="music-track"
+                      data-current={current}
+                      aria-current={current ? 'true' : undefined}
+                      onClick={() => playTrack(i)}
+                    >
+                      <span className="music-track-no" aria-hidden="true">
+                        {current && playing ? (
+                          <span className="flex items-end gap-[2px]" style={{ height: '12px' }}>
+                            <span className="eq-bar" style={{ height: '12px', width: '2.5px' }} />
+                            <span className="eq-bar" style={{ height: '12px', width: '2.5px' }} />
+                            <span className="eq-bar" style={{ height: '12px', width: '2.5px' }} />
+                          </span>
+                        ) : (
+                          String(i + 1).padStart(2, '0')
+                        )}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate font-sans font-medium" style={{ fontSize: '0.92rem' }}>{t.title}</span>
+                        {t.by && <span className="block truncate font-sans text-fog" style={{ fontSize: '0.8rem' }}>{t.by}</span>}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
 
           {/* Footer */}

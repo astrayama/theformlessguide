@@ -1,193 +1,196 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import SectionHeading from './SectionHeading';
+import Thumb from './Thumb';
+import { PATHS, PLAYLIST_COUNT, CHANNEL_PLAYLISTS_URL, playlistUrl } from '../library';
 
-const categories = [
-  {
-    id: 'philosophy',
-    label: 'Philosophy & Non-Duality',
-    description: 'Explore the nature of reality, non-dual awareness, and the architecture of consciousness through ancient and modern lenses.',
-    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjPS8d6HN9F3Ugbw7fr2pWKH',
-    accent: '#CC00FF',
-    icon: (
-      <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
-        <circle cx="30" cy="30" r="22" stroke="#CC00FF" strokeWidth="1.2" opacity="0.5" />
-        <polygon points="30,8 52,42 8,42" stroke="#CC00FF" strokeWidth="1" fill="none" opacity="0.7" />
-        <polygon points="30,52 52,18 8,18" stroke="#CC00FF" strokeWidth="1" fill="none" opacity="0.5" />
-        <circle cx="30" cy="30" r="5" fill="#CC00FF" opacity="0.6" />
-      </svg>
-    ),
-  },
-  {
-    id: 'shadow',
-    label: 'Shadow Work & Psychology',
-    description: 'Journey into depth psychology, Jungian archetypes, and the mechanics of the unconscious mind. Meet your shadow and integrate it.',
-    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjN9GvGXUSa52Cwtrq1B--6T',
-    accent: '#7b2fff',
-    icon: (
-      <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
-        {/* Half-light half-dark circle */}
-        <path d="M30,8 A22,22 0 0,1 30,52 Z" fill="#7b2fff" opacity="0.3" />
-        <circle cx="30" cy="30" r="22" stroke="#7b2fff" strokeWidth="1.2" opacity="0.6" />
-        <circle cx="30" cy="22" r="6" fill="#7b2fff" opacity="0.5" />
-        <circle cx="30" cy="38" r="6" fill="none" stroke="#7b2fff" strokeWidth="1" opacity="0.5" />
-        <circle cx="30" cy="38" r="2" fill="#7b2fff" opacity="0.4" />
-      </svg>
-    ),
-  },
-  {
-    id: 'somatic',
-    label: 'Somatic Practice & The Body',
-    description: 'Master the biological vessel through nervous system regulation, somatic technology, and embodied movement practices.',
-    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjPqGeQ84DnCxCvr_thY9Apf',
-    accent: '#00CC44',
-    icon: (
-      <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
-        {/* Body/wave form */}
-        <circle cx="30" cy="14" r="7" stroke="#00CC44" strokeWidth="1.2" opacity="0.7" />
-        <path d="M22,22 L22,40 M38,22 L38,40" stroke="#00CC44" strokeWidth="1.2" opacity="0.5" />
-        <path d="M22,30 L38,30" stroke="#00CC44" strokeWidth="1" opacity="0.6" />
-        <path d="M22,40 L18,52 M38,40 L42,52" stroke="#00CC44" strokeWidth="1.2" opacity="0.5" />
-        {/* Energy waves */}
-        <path d="M10,30 Q20,24 30,30 Q40,36 50,30" stroke="#00CC44" strokeWidth="0.8" opacity="0.35" fill="none" />
-        <path d="M8,36 Q20,28 30,36 Q40,44 52,36" stroke="#00CC44" strokeWidth="0.6" opacity="0.2" fill="none" />
-      </svg>
-    ),
-  },
-  {
-    id: 'cosmic',
-    label: 'Cosmic Symbolism',
-    description: 'Decode the language of the cosmos through sacred geometry, mythological archetypes, and the symbolic architecture of reality.',
-    link: 'https://www.youtube.com/playlist?list=PLg1ZRqch8VjOjhbFnuHXXl6LkA35MOL6E',
-    accent: '#ffd700',
-    icon: (
-      <svg viewBox="0 0 60 60" className="w-12 h-12" fill="none">
-        {/* Star / celestial */}
-        {[0, 72, 144, 216, 288].map((a, i) => {
-          const a2 = a + 36;
-          const r1 = 24, r2 = 10;
-          return (
-            <g key={i}>
-              <line
-                x1={30 + Math.cos(a * Math.PI / 180) * r2} y1={30 + Math.sin(a * Math.PI / 180) * r2}
-                x2={30 + Math.cos(a * Math.PI / 180) * r1} y2={30 + Math.sin(a * Math.PI / 180) * r1}
-                stroke="#ffd700" strokeWidth="1.2" opacity="0.7" />
-              <line
-                x1={30 + Math.cos(a * Math.PI / 180) * r1} y1={30 + Math.sin(a * Math.PI / 180) * r1}
-                x2={30 + Math.cos(a2 * Math.PI / 180) * r2} y2={30 + Math.sin(a2 * Math.PI / 180) * r2}
-                stroke="#ffd700" strokeWidth="1" opacity="0.6" />
-            </g>
-          );
-        })}
-        <circle cx="30" cy="30" r="8" stroke="#ffd700" strokeWidth="0.8" opacity="0.4" />
-        <circle cx="30" cy="30" r="3" fill="#ffd700" opacity="0.8" />
-      </svg>
-    ),
-  },
-];
+const Arrow = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+    <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 export default function CatalogSection() {
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const { ref, inView } = useInView({ threshold: 0.08, triggerOnce: true });
+  const [pathKey, setPathKey] = useState(PATHS[0].key);
+  const [rowIndex, setRowIndex] = useState(0);
+
+  const path = PATHS.find((p) => p.key === pathKey);
+  const featured = path.playlists[rowIndex] || path.playlists[0];
+
+  const choosePath = (key) => {
+    setPathKey(key);
+    setRowIndex(0);
+  };
+
+  // Left and right arrow keys move between tabs, the way a tab list should.
+  const onTabKey = (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault();
+    const i = PATHS.findIndex((p) => p.key === pathKey);
+    const next = PATHS[(i + (e.key === 'ArrowRight' ? 1 : PATHS.length - 1)) % PATHS.length];
+    choosePath(next.key);
+    document.getElementById(`path-tab-${next.key}`)?.focus();
+  };
 
   return (
     <section id="catalog" className="relative py-28 px-6">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16"
-        style={{ background: 'linear-gradient(to bottom, transparent, rgba(102,0,204,0.4), transparent)' }} />
+        style={{ background: 'linear-gradient(to bottom, transparent, rgba(150,110,255,0.5), transparent)' }} />
 
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: 'easeOut' }}
+      <motion.div
+        ref={ref}
+        className="max-w-6xl mx-auto"
+        initial={{ opacity: 0, y: 10 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 1, ease: 'easeOut' }}
+      >
+        <SectionHeading
+          eyebrow="THIRD EYE"
+          color="#b79bff"
+          title="Infinite Wisdom"
+          sub={`${PLAYLIST_COUNT} playlists of teachings and meditations, sorted by what you came here for.`}
+        />
+
+        {/* Path tabs */}
+        <div
+          role="tablist"
+          aria-label="Choose a path through the library"
+          className="flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap"
+          onKeyDown={onTabKey}
         >
-          <div className="text-center mb-16">
-            <h2 className="font-cinzel font-bold text-cream mb-4"
-              style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
-              Infinite Wisdom
-            </h2>
-            <p className="font-raleway text-muted max-w-xl mx-auto">
-              Explore the full catalog of teachings, meditations, and guides
-            </p>
-          </div>
+          {PATHS.map((p) => (
+            <button
+              key={p.key}
+              id={`path-tab-${p.key}`}
+              role="tab"
+              type="button"
+              aria-selected={p.key === pathKey}
+              aria-controls="library-panel"
+              tabIndex={p.key === pathKey ? 0 : -1}
+              className="path-tab font-sans"
+              style={{ '--c': p.color }}
+              onClick={() => choosePath(p.key)}
+            >
+              {p.tab}
+            </button>
+          ))}
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {categories.map((cat) => (
-              <div
-                key={cat.id}
-                className="flex flex-col items-center text-center p-7 rounded-xl transition-all duration-350 group"
-                style={{ background: '#1a2035', border: `1px solid ${cat.accent}22` }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = `${cat.accent}66`;
-                  e.currentTarget.style.boxShadow = `0 0 25px ${cat.accent}15`;
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = `${cat.accent}22`;
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <div className="mb-5 transition-all duration-300 group-hover:scale-110"
-                  style={{ filter: `drop-shadow(0 0 6px ${cat.accent}66)` }}>
-                  {cat.icon}
-                </div>
-                <h3 className="font-cinzel font-semibold mb-3" style={{ color: cat.accent, fontSize: '0.95rem', lineHeight: 1.4 }}>
-                  {cat.label}
-                </h3>
-                <p className="font-raleway text-xs leading-relaxed mb-6" style={{ color: '#7a8aaa' }}>
-                  {cat.description}
-                </p>
-                <a
-                  href={cat.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-cinzel text-xs tracking-widest px-5 py-2 rounded mt-auto transition-all duration-300"
-                  style={{
-                    color: cat.accent,
-                    border: `1px solid ${cat.accent}44`,
-                    background: 'transparent',
-                    letterSpacing: '0.12em',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = `${cat.accent}15`;
-                    e.currentTarget.style.boxShadow = `0 0 12px ${cat.accent}33`;
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  EXPLORE
-                </a>
-              </div>
-            ))}
-          </div>
-
-          {/* Big CTA */}
-          <div className="text-center mt-14">
+        {/* Panel */}
+        <div
+          id="library-panel"
+          role="tabpanel"
+          aria-labelledby={`path-tab-${path.key}`}
+          className="glass rounded-2xl mt-6 p-5 sm:p-8"
+          style={{ borderColor: `${path.color}33` }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            {/* Featured playlist artwork, with its own action button underneath */}
+            <div className="lg:col-span-5">
             <a
-              href="https://www.youtube.com/@TheFormlessGuide/playlists"
+              href={playlistUrl(featured.id)}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-cinzel text-sm tracking-widest px-10 py-4 rounded inline-block transition-all duration-300"
-              style={{
-                color: '#CC00FF',
-                border: '1.5px solid rgba(204,0,255,0.5)',
-                background: 'transparent',
-                letterSpacing: '0.2em',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = 'rgba(204,0,255,0.08)';
-                e.currentTarget.style.boxShadow = '0 0 30px rgba(204,0,255,0.25)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
+              className="lift block relative overflow-hidden rounded-xl"
+              style={{ aspectRatio: '16 / 9', background: '#101629', border: `1px solid ${path.color}40` }}
+              aria-label={`Open the playlist ${featured.title} on YouTube`}
             >
-              EXPLORE FULL CATALOG
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={featured.id}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  <Thumb videoId={featured.video} className="absolute inset-0 w-full h-full object-cover" />
+                </motion.div>
+              </AnimatePresence>
+              <div className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(8,11,22,0.92) 0%, rgba(8,11,22,0.25) 55%, rgba(8,11,22,0) 100%)' }} />
+              <div className="absolute left-4 right-4 bottom-4 flex items-end justify-between gap-4">
+                <div>
+                  <p className="micro-label mb-1.5" style={{ color: path.color, fontSize: '11px' }}>PLAYLIST</p>
+                  <p className="font-sans font-medium text-cream leading-snug" style={{ fontSize: '1.05rem' }}>
+                    {featured.title}
+                  </p>
+                </div>
+                <span className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
+                  style={{ background: path.color, color: '#0a0e1a' }} aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 ml-0.5" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </div>
             </a>
+              <div className="hidden lg:flex items-center justify-between gap-4 mt-5">
+                <p className="font-sans text-muted" style={{ fontSize: '0.92rem' }}>
+                  {path.playlists.length} playlists on this path
+                </p>
+                <a
+                  href={playlistUrl(featured.id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-line micro-label"
+                  style={{ '--c': path.color, padding: '11px 20px' }}
+                >
+                  OPEN PLAYLIST <Arrow />
+                </a>
+              </div>
+            </div>
+
+            {/* Playlist list */}
+            <div className="lg:col-span-7">
+              <p className="font-cinzel text-cream mb-3"
+                style={{ fontSize: 'clamp(1.25rem, 2.4vw, 1.6rem)', letterSpacing: '0.04em' }}>
+                {path.intent}
+              </p>
+              <ul>
+                {path.playlists.map((pl, i) => (
+                  <li key={pl.id}>
+                    <a
+                      href={playlistUrl(pl.id)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="playlist-row"
+                      style={{ '--c': path.color }}
+                      data-active={i === rowIndex}
+                      onMouseEnter={() => setRowIndex(i)}
+                      onFocus={() => setRowIndex(i)}
+                    >
+                      <span className="micro-label" style={{ color: path.color }} aria-hidden="true">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span>
+                        <span className="block font-sans font-medium text-cream" style={{ fontSize: '1.05rem' }}>
+                          {pl.title}
+                        </span>
+                        <span className="block font-sans text-secondary mt-1" style={{ fontSize: '0.92rem', lineHeight: 1.5 }}>
+                          {pl.note}
+                        </span>
+                      </span>
+                      <span className="row-arrow"><Arrow className="w-5 h-5" /></span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </motion.div>
-      </div>
+        </div>
+
+        <div className="mt-10 flex justify-center md:justify-start">
+          <a
+            href={CHANNEL_PLAYLISTS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-line micro-label"
+            style={{ '--c': '#b79bff' }}
+          >
+            EXPLORE FULL CATALOG <Arrow />
+          </a>
+        </div>
+      </motion.div>
     </section>
   );
 }

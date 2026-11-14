@@ -1,3 +1,4 @@
+import { START_HERE, playlistUrl } from '../library';
 import { useRef, useCallback } from 'react';
 import {
   motion,
@@ -194,7 +195,7 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 2, ease: 'easeOut' }}
         >
           <a
-            href="https://www.youtube.com/playlist?list=PLg1ZRqch8VjPS8d6HN9F3Ugbw7fr2pWKH"
+            href={playlistUrl(START_HERE.id)}
             target="_blank"
             rel="noopener noreferrer"
             className="micro-label px-8 py-3.5 rounded transition-all duration-300"

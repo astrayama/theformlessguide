@@ -250,7 +250,7 @@ body {
   display: inline-block;
   width: 3px;
   border-radius: 1.5px;
-  background: #00f5d4;
+  background: currentColor;
   height: 14px;
   transform-origin: bottom;
   transform: scaleY(0.5);
@@ -387,11 +387,84 @@ input:focus-visible {
     radial-gradient(40% 40% at 50% 50%, rgba(255, 127, 0, 0.07), transparent 70%);
 }
 
-/* Solid night surface for the floating music player, which sits on paper */
-.night {
-  background: #141826;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 16px 40px rgba(23, 20, 31, 0.3);
+/* Walking music: a vermilion seal stamped in the corner, and the paper card
+   it lays down when pressed. */
+.music-seal {
+  width: 56px;
+  height: 56px;
+  border-radius: 15px;
+  cursor: pointer;
+  color: #fbf7ef;
+  background:
+    radial-gradient(120% 120% at 25% 20%, rgba(255, 255, 255, 0.18), transparent 55%),
+    #c0372d;
+  box-shadow:
+    inset 0 0 0 3px #c0372d,
+    inset 0 0 0 4.5px rgba(251, 247, 239, 0.75),
+    0 10px 24px rgba(192, 55, 45, 0.35),
+    0 2px 6px rgba(23, 20, 31, 0.2);
+}
+.music-tag {
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--vellum);
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 20px rgba(23, 20, 31, 0.12);
+  font-size: 11px;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.music-seal-wrap:hover .music-tag,
+.music-seal-wrap:focus-within .music-tag {
+  opacity: 1;
+  transform: translateX(0);
+}
+.music-card {
+  background: var(--vellum);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(23, 20, 31, 0.28), 0 2px 8px rgba(23, 20, 31, 0.1);
+}
+.music-list {
+  max-height: min(26vh, 196px);
+  overflow-y: auto;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(23, 20, 31, 0.25) transparent;
+}
+.music-track {
+  display: grid;
+  grid-template-columns: 1.9rem 1fr;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 7px 8px;
+  border-radius: 10px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.music-track:hover,
+.music-track:focus-visible { background: rgba(23, 20, 31, 0.07); }
+.music-track[data-current='true'] { background: rgba(192, 55, 45, 0.1); }
+.music-track-no {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--fog);
+  display: flex;
+  justify-content: center;
+}
+.music-track[data-current='true'] .music-track-no { color: #b3261e; }
+@media (prefers-reduced-motion: no-preference) {
+  .music-seal { animation: seal-breathe 6s ease-in-out infinite; }
+}
+@keyframes seal-breathe {
+  0%, 100% { box-shadow: inset 0 0 0 3px #c0372d, inset 0 0 0 4.5px rgba(251, 247, 239, 0.75), 0 10px 24px rgba(192, 55, 45, 0.35), 0 2px 6px rgba(23, 20, 31, 0.2); }
+  50% { box-shadow: inset 0 0 0 3px #c0372d, inset 0 0 0 4.5px rgba(251, 247, 239, 0.75), 0 14px 34px rgba(192, 55, 45, 0.5), 0 2px 6px rgba(23, 20, 31, 0.2); }
 }
 
 /* Display type */

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MOMENTS_PLAYLIST_ID, UPLOADS_PLAYLIST_ID, FALLBACK_EPISODES } from './library';
+import { WALKING_PLAYLIST_ID, WALKING_TRACKS } from './walkingTracks';
 
 const API = 'https://www.googleapis.com/youtube/v3';
 const key = () => import.meta.env.VITE_YOUTUBE_API_KEY;
@@ -53,7 +54,7 @@ export function useShorts() {
 }
 
 // The newest long-form uploads. The uploads playlist mixes in Shorts, so a
-// second call reads durations and keeps only videos over four minutes.
+// second call reads durations and keeps only videos of four minutes or more.
 export function useLatestEpisodes(count = 5) {
   const [episodes, setEpisodes] = useState(FALLBACK_EPISODES.slice(0, count));
   useEffect(() => {
@@ -61,17 +62,26 @@ export function useLatestEpisodes(count = 5) {
     let cancelled = false;
     (async () => {
       try {
-        const recent = items(
-          await fetch(`${API}/playlistItems?part=snippet&playlistId=${UPLOADS_PLAYLIST_ID}&maxResults=40&key=${key()}`).then((r) => r.json())
-        );
-        if (!recent.length) return;
-        const details = await fetch(
-          `${API}/videos?part=contentDetails&id=${recent.map((v) => v.id).join(',')}&key=${key()}`
-        ).then((r) => r.json());
-        const long = new Set(
-          (details.items || []).filter((d) => seconds(d.contentDetails?.duration) >= 240).map((d) => d.id)
-        );
-        const list = recent.filter((v) => long.has(v.id)).slice(0, count);
+        const found = [];
+        let pageToken = '';
+        // Shorts outnumber episodes, so read up to three pages of uploads.
+        for (let page = 0; page < 3 && found.length < count; page++) {
+          const data = await fetch(
+            `${API}/playlistItems?part=snippet&playlistId=${UPLOADS_PLAYLIST_ID}&maxResults=50&key=${key()}${pageToken ? `&pageToken=${pageToken}` : ''}`
+          ).then((r) => r.json());
+          const recent = items(data);
+          if (!recent.length) break;
+          const details = await fetch(
+            `${API}/videos?part=contentDetails&id=${recent.map((v) => v.id).join(',')}&key=${key()}`
+          ).then((r) => r.json());
+          const long = new Set(
+            (details.items || []).filter((d) => seconds(d.contentDetails?.duration) >= 240).map((d) => d.id)
+          );
+          found.push(...recent.filter((v) => long.has(v.id)));
+          pageToken = data.nextPageToken;
+          if (!pageToken) break;
+        }
+        const list = found.slice(0, count);
         if (!cancelled && list.length >= 3) setEpisodes(list);
       } catch {
         /* keep the fallback */
@@ -80,4 +90,52 @@ export function useLatestEpisodes(count = 5) {
     return () => { cancelled = true; };
   }, [count]);
   return episodes;
+}
+
+// A music upload's title, without the "(Official Music Video)" style tags or
+// the artist's name in front.
+function cleanTrack(raw) {
+  const t = cleanTitle(raw)
+    .replace(/[([][^)\]]*(official|video|audio|lyric|remaster|visuali[sz]er|4k|\bhd\b|album version)[^)\]]*[)\]]/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const parts = t.split(' - ');
+  return parts.length === 2 && parts[1].length > 1 ? parts[1].trim() : t;
+}
+const cleanArtist = (raw) => (raw || '').replace(/\s*-\s*Topic$/i, '').replace(/VEVO$/i, '').trim();
+
+// The Walking Meditations playlist, for the music player's track list. Starts
+// from the saved list so there is always something to choose from, then
+// follows the live playlist when the API key is available.
+export function useWalkingTracks() {
+  const [tracks, setTracks] = useState(WALKING_TRACKS);
+  useEffect(() => {
+    if (!key()) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const known = new Map(WALKING_TRACKS.map((t) => [t.id, t]));
+        const found = [];
+        let pageToken = '';
+        for (let page = 0; page < 4; page++) {
+          const data = await fetch(
+            `${API}/playlistItems?part=snippet&playlistId=${WALKING_PLAYLIST_ID}&maxResults=50&key=${key()}${pageToken ? `&pageToken=${pageToken}` : ''}`
+          ).then((r) => r.json());
+          (data.items || []).forEach((it) => {
+            const sn = it.snippet;
+            if (!sn?.thumbnails || !Object.keys(sn.thumbnails).length) return; // removed or private
+            const id = sn.resourceId.videoId;
+            found.push(known.get(id) || { id, title: cleanTrack(sn.title), by: cleanArtist(sn.videoOwnerChannelTitle) });
+          });
+          pageToken = data.nextPageToken;
+          if (!pageToken) break;
+        }
+        if (!cancelled && found.length) setTracks(found);
+      } catch {
+        /* keep the saved list */
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+  return tracks;
 }

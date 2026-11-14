@@ -14,7 +14,8 @@ import Footer from './components/Footer';
 import MusicFAB from './components/MusicFAB';
 import { Analytics } from "@vercel/analytics/react"
 
-const SECTIONS = ['hero', 'guides', 'catalog', 'moments', 'about', 'stillness', 'shop'];
+// Page order follows the chakra rail: root, sacral, solar, heart, throat, third eye, crown.
+const SECTIONS = ['hero', 'guides', 'moments', 'about', 'stillness', 'catalog', 'shop'];
 
 function useActiveSection() {
   const [active, setActive] = useState('hero');
@@ -77,10 +78,10 @@ export default function App() {
       <main className="relative z-10 md:px-16">
         <HeroSection />
         <GuidesSection />
-        <CatalogSection />
         <MomentsSection />
         <AboutSection />
         <StillnessSection />
+        <CatalogSection />
         <ShopSection />
         <Footer />
         

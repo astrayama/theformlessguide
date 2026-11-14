@@ -301,3 +301,89 @@ body {
 .animate-bounce-chevron {
   animation: bounce-chevron 1.5s ease-in-out infinite;
 }
+
+/* ---------------------------------------------------------------- */
+/* Redesign: shared buttons, focus rings, library, moments, shop     */
+/* ---------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #00f5d4;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Outline button. Set --c to the accent color. */
+.btn-line {
+  --c: #00f5d4;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 6px;
+  color: var(--c);
+  border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+  background: color-mix(in srgb, var(--c) 6%, transparent);
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.btn-line:hover {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--c) 30%, transparent);
+}
+.btn-line svg { transition: transform 0.3s ease; }
+.btn-line:hover svg { transform: translateX(3px); }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Library path tabs */
+.path-tab {
+  --c: #00f5d4;
+  flex-shrink: 0;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #c2c8dc;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(26, 32, 53, 0.45);
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.path-tab:hover { color: #f2ecdf; border-color: rgba(255, 255, 255, 0.3); }
+.path-tab[aria-selected='true'] {
+  color: #0a0e1a;
+  background: var(--c);
+  border-color: var(--c);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--c) 35%, transparent);
+}
+
+/* Library playlist rows */
+.playlist-row {
+  --c: #00f5d4;
+  display: grid;
+  grid-template-columns: 2.25rem 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  transition: background 0.25s ease;
+}
+.playlist-row:hover,
+.playlist-row:focus-visible,
+.playlist-row[data-active='true'] { background: color-mix(in srgb, var(--c) 9%, transparent); }
+.playlist-row .row-arrow { color: var(--c); opacity: 0.45; transition: transform 0.25s ease, opacity 0.25s ease; }
+.playlist-row:hover .row-arrow,
+.playlist-row[data-active='true'] .row-arrow { opacity: 1; transform: translateX(4px); }
+
+/* Card lift used by Moments and Shop */
+.lift { transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; }
+.lift:hover { transform: translateY(-4px); }
+.lift img { transition: transform 0.6s ease; }
+.lift:hover img { transform: scale(1.04); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lift, .lift img, .btn-line svg, .playlist-row .row-arrow { transition: none; }
+  .lift:hover, .lift:hover img { transform: none; }
+}

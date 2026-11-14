@@ -1,45 +1,37 @@
-import { useState, useEffect, useRef } from 'react';
-import OpalField from './assets/OpalField';
-import ParallaxBG from './assets/ParallaxBG';
-import LeftSidebar from './components/LeftSidebar';
-import ChakraNav from './components/ChakraNav';
+import { useState, useEffect } from 'react';
+import PaperField from './assets/PaperField';
+import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import GuidesSection from './components/GuidesSection';
-import MomentsSection from './components/MomentsSection';
+import TeachingsSection from './components/TeachingsSection';
 import AboutSection from './components/AboutSection';
 import StillnessSection from './components/StillnessSection';
 import CatalogSection from './components/CatalogSection';
 import ShopSection from './components/ShopSection';
 import Footer from './components/Footer';
 import MusicFAB from './components/MusicFAB';
+import { SECTIONS } from './library';
 import { Analytics } from "@vercel/analytics/react"
 
-// Page order follows the chakra rail: root, sacral, solar, heart, throat, third eye, crown.
-const SECTIONS = ['hero', 'guides', 'moments', 'about', 'stillness', 'catalog', 'shop'];
-
+// Which section sits across the middle of the screen. The header dots and the
+// paper's watercolor tint both follow it.
 function useActiveSection() {
   const [active, setActive] = useState('hero');
 
   useEffect(() => {
     const observers = [];
 
-    SECTIONS.forEach((id) => {
+    SECTIONS.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (!el) return;
 
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActive(id);
-            }
+            if (entry.isIntersecting) setActive(id);
           });
         },
-        {
-          root: null,
-          rootMargin: '-40% 0px -40% 0px',
-          threshold: 0,
-        }
+        { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 }
       );
 
       observer.observe(el);
@@ -57,34 +49,28 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Fixed opalescent field — tint follows the active section's chakra */}
-      <OpalField activeSection={activeSection} />
+      {/* Fixed paper, grain and watercolor washes */}
+      <PaperField activeSection={activeSection} />
 
-      {/* Fixed parallax texture (stars + sacred geometry) over the field */}
-      <ParallaxBG />
+      {/* Logo, section links and the chakra ladder */}
+      <Header activeSection={activeSection} />
 
-      {/* Mobile chakra top bar — sticky */}
-      <div className="md:hidden sticky top-0 z-50">
-        <ChakraNav activeSection={activeSection} />
-      </div>
-
-      {/* Fixed sidebars (desktop) */}
-      <LeftSidebar />
-      <div className="hidden md:block">
-        <ChakraNav activeSection={activeSection} />
-      </div>
-
-      {/* Main content — padded to avoid sidebars on desktop */}
-      <main className="relative z-10 md:px-16">
+      {/* Sections run root to crown */}
+      <main className="relative">
         <HeroSection />
-        <GuidesSection />
-        <MomentsSection />
+
+        {/* The Guides keep their own night sky, set into the paper as a dark chamber */}
+        <div className="void">
+          <div className="void-glow" aria-hidden="true" />
+          <GuidesSection />
+        </div>
+
+        <TeachingsSection />
         <AboutSection />
         <StillnessSection />
         <CatalogSection />
         <ShopSection />
         <Footer />
-        
       </main>
 
       {/* Floating music player */}

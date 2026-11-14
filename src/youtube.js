@@ -53,7 +53,7 @@ export function useShorts() {
 }
 
 // The newest long-form uploads. The uploads playlist mixes in Shorts, so a
-// second call reads durations and keeps only videos over four minutes.
+// second call reads durations and keeps only videos of four minutes or more.
 export function useLatestEpisodes(count = 5) {
   const [episodes, setEpisodes] = useState(FALLBACK_EPISODES.slice(0, count));
   useEffect(() => {
@@ -61,17 +61,26 @@ export function useLatestEpisodes(count = 5) {
     let cancelled = false;
     (async () => {
       try {
-        const recent = items(
-          await fetch(`${API}/playlistItems?part=snippet&playlistId=${UPLOADS_PLAYLIST_ID}&maxResults=40&key=${key()}`).then((r) => r.json())
-        );
-        if (!recent.length) return;
-        const details = await fetch(
-          `${API}/videos?part=contentDetails&id=${recent.map((v) => v.id).join(',')}&key=${key()}`
-        ).then((r) => r.json());
-        const long = new Set(
-          (details.items || []).filter((d) => seconds(d.contentDetails?.duration) >= 240).map((d) => d.id)
-        );
-        const list = recent.filter((v) => long.has(v.id)).slice(0, count);
+        const found = [];
+        let pageToken = '';
+        // Shorts outnumber episodes, so read up to three pages of uploads.
+        for (let page = 0; page < 3 && found.length < count; page++) {
+          const data = await fetch(
+            `${API}/playlistItems?part=snippet&playlistId=${UPLOADS_PLAYLIST_ID}&maxResults=50&key=${key()}${pageToken ? `&pageToken=${pageToken}` : ''}`
+          ).then((r) => r.json());
+          const recent = items(data);
+          if (!recent.length) break;
+          const details = await fetch(
+            `${API}/videos?part=contentDetails&id=${recent.map((v) => v.id).join(',')}&key=${key()}`
+          ).then((r) => r.json());
+          const long = new Set(
+            (details.items || []).filter((d) => seconds(d.contentDetails?.duration) >= 240).map((d) => d.id)
+          );
+          found.push(...recent.filter((v) => long.has(v.id)));
+          pageToken = data.nextPageToken;
+          if (!pageToken) break;
+        }
+        const list = found.slice(0, count);
         if (!cancelled && list.length >= 3) setEpisodes(list);
       } catch {
         /* keep the fallback */

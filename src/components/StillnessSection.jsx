@@ -41,11 +41,16 @@ export default function StillnessSection() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
+          <p className="micro-label flex items-center justify-center gap-3 mb-5" style={{ color: '#5cb8ff' }}>
+            <span aria-hidden="true" className="inline-block w-2 h-2 rounded-full"
+              style={{ background: '#5cb8ff', boxShadow: '0 0 10px #5cb8ff' }} />
+            THROAT
+          </p>
           <h2 className="font-cinzel font-medium text-cream mb-4"
             style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', letterSpacing: '0.06em' }}>
             A Moment of Stillness
           </h2>
-          <p className="font-sans text-muted mb-14 max-w-md mx-auto">
+          <p className="font-sans text-secondary mb-14 max-w-md mx-auto" style={{ fontSize: '1.05rem', lineHeight: 1.6 }}>
             Type a burden you wish to release below. Watch it fade into the void.
           </p>
         </motion.div>
@@ -101,10 +106,11 @@ export default function StillnessSection() {
                     onKeyDown={e => e.key === 'Enter' && handleRelease()}
                     placeholder="What weighs on you today?"
                     disabled={!!releasing}
-                    className="w-full bg-transparent font-sans text-center text-cream text-lg outline-none placeholder-muted/40 pb-3"
+                    aria-label="A burden you wish to release"
+                    className="w-full bg-transparent font-sans text-center text-cream text-lg outline-none placeholder-muted pb-3"
                     style={{
-                      borderBottom: '1px solid rgba(0,153,255,0.4)',
-                      caretColor: '#0099ff',
+                      borderBottom: '1px solid rgba(92,184,255,0.7)',
+                      caretColor: '#5cb8ff',
                       color: '#f2ecdf',
                     }}
                   />
@@ -114,10 +120,10 @@ export default function StillnessSection() {
                   disabled={!burden.trim() || !!releasing}
                   className="micro-label px-8 py-3.5 rounded transition-all duration-300"
                   style={{
-                    color: '#0099ff',
-                    border: '1px solid rgba(0,153,255,0.5)',
+                    color: '#5cb8ff',
+                    border: '1px solid rgba(92,184,255,0.6)',
                     background: 'transparent',
-                    opacity: burden.trim() ? 1 : 0.4,
+                    opacity: burden.trim() ? 1 : 0.65,
                   }}
                   onMouseEnter={e => {
                     if (burden.trim()) {

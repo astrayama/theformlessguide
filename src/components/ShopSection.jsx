@@ -29,30 +29,30 @@ const WAYS = [
 // ever hidden in the store, its link lands on the store home page instead.
 const PRINTS = [
   {
-    name: 'Grow Slowly Mug',
-    image: '/shop-grow-slowly-mug.jpg',
-    href: `${STORE_URL}/product/grow-slowly-mug-foggy-forest-quote-mug-teacher-white-elephant-gift`,
+    name: 'Still As Snow Sweatshirt',
+    image: '/shop-still-as-snow-sweatshirt.jpg',
+    href: `${STORE_URL}/product/still-as-snow-meditating-snowman-sweatshirt-cozy-zen-christmas-crewneck`,
     r: '-5deg',
     y: '0px',
   },
   {
-    name: 'Still As Snow Sweatshirt',
-    image: '/shop-still-as-snow-sweatshirt.jpg',
-    href: `${STORE_URL}/product/still-as-snow-meditating-snowman-sweatshirt-cozy-zen-christmas-crewneck`,
+    name: 'Formless Embroidered Beanie',
+    image: '/shop-formless-beanie.jpg',
+    href: `${STORE_URL}/product/formless-embroidered-beanie`,
     r: '4deg',
     y: '34px',
-  },
-  {
-    name: 'The Formless Year 2027',
-    image: '/shop-2027-calendar.jpg',
-    href: `${STORE_URL}/product/the-formless-year-2027-wall-calendar`,
-    r: '-3deg',
-    y: '-8px',
   },
   {
     name: 'Stay Formless Dad Hat',
     image: '/shop-stay-formless-hat.jpg',
     href: `${STORE_URL}/product/stay-formless-embroidered-enso-dad-hat`,
+    r: '-3deg',
+    y: '-8px',
+  },
+  {
+    name: 'Chakra Flow Yoga Mat',
+    image: '/shop-chakra-flow-yoga-mat.jpg',
+    href: `${STORE_URL}/product/chakra-flow-yoga-mat`,
     r: '6deg',
     y: '26px',
   },

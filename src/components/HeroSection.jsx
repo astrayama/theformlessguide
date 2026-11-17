@@ -3,7 +3,10 @@ import { Arrow } from './Icons';
 import WorkIndex from './WorkIndex';
 import { START_HERE, SPOTIFY_URL, playlistUrl } from '../library';
 
-const TOPICS = ['Non-duality', 'Buddhism', 'Shadow work', 'The chakras', 'Kundalini'];
+const TOPICS = [
+  'Non-duality', 'Theravāda Buddhism', 'Zen', 'Philosophy', 'Psychology', 'Science',
+  'Meditation', 'Shadow work', 'Yoga and the chakras', 'Gnosticism', 'Mysticism',
+];
 
 export default function HeroSection() {
   const reduced = useReducedMotion();

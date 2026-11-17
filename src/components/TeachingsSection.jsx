@@ -23,7 +23,7 @@ export default function TeachingsSection() {
         <SectionHeading
           section="teachings"
           title={<>The <em>teachings</em></>}
-          sub="A spirituality podcast on non-duality, Buddhism, Carl Jung's shadow work, the chakras and Kundalini, hosted by Sat Guru Jay."
+          sub="A spirituality podcast on non-duality, rooted in Theravāda Buddhism and drawing on philosophy, psychology and science: Zen, Yoga, Carl Jung, Gnosticism and mysticism. Hosted by Sat Guru Jay."
         >
           <div className="flex flex-wrap gap-3">
             <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="btn-ink micro-label" style={{ padding: '12px 22px' }}>

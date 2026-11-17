@@ -17,7 +17,7 @@ export default function Footer() {
             <div>
               <p className="font-cinzel text-ink" style={{ fontSize: '0.95rem', letterSpacing: '0.2em' }}>THE FORMLESS GUIDE</p>
               <p className="font-sans text-stone mt-2 max-w-xs" style={{ fontSize: '0.98rem', lineHeight: 1.55 }}>
-                A spirituality podcast hosted by Sat Guru Jay. Myth meets mindfulness here, and presence becomes practice.
+                A spirituality podcast on non-duality, hosted by Sat Guru Jay. Myth meets mindfulness here, and presence becomes practice.
               </p>
             </div>
           </div>

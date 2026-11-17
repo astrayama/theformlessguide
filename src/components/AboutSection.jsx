@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import SectionHeading from './SectionHeading';
 
+// The core of the teaching, and the three lenses that grow out of it.
+const CORE = { name: 'Spirituality', note: 'Non-dual consciousness, rooted in Theravāda' };
 const LENSES = ['Philosophy', 'Psychology', 'Science'];
 const FACTS = [
   { figure: '700+', label: 'teachings on YouTube' },
@@ -57,19 +59,31 @@ export default function AboutSection() {
 
           <h3 className="micro-label mb-4" style={{ color: '#553bc0' }}>THE TEACHING</h3>
           <p className="font-sans text-stone" style={{ fontSize: '1.12rem', lineHeight: 1.75, maxWidth: '62ch' }}>
-            The teachings of The Formless Guide offer a Universal Synthesis, exploring the
-            architecture of life through a meta-framework of Philosophy, Psychology, and
+            At its heart, The Formless Guide is a spiritual path of non-duality, rooted in
+            Theravāda Buddhism. From that root, the teachings offer a Universal Synthesis, exploring the architecture of life through Philosophy, Psychology, and
             Science. Guru Jay guides seekers toward their own direct experience of truth by
             integrating non-dual wisdom, archetypal inquiry, and complex systems theory.
-            Drawing from Buddhist Theravāda, Shinto, Zen, Yoga, Gnosticism, and mysticism,
-            the practice is refined through the study of systems and the soul. Whether
+            Drawing also from Zen, Shinto, Yoga, Gnosticism, and mysticism, the practice is
+            refined through the study of systems and the soul. Whether
             deconstructing cosmic symbolism or the mechanics of the mind, the goal remains
             the same: to move from sleep to waking, from duality to Truly Being. The path
             is formless, fearless, and free beyond dogma.
           </p>
 
+          {/* The core: spirituality, the ground the three lenses grow from */}
+          <div className="sheet mt-10 px-5 py-6 text-center" style={{ borderRadius: '20px', borderColor: 'rgba(85,59,192,0.35)' }}
+            aria-label="The core of the teaching">
+            <span className="micro-label block mb-2" style={{ fontSize: '11px', color: '#553bc0' }}>THE CORE</span>
+            <span className="display text-ink block" style={{ fontSize: 'clamp(1.4rem, 3vw, 1.9rem)' }}>
+              {CORE.name}
+            </span>
+            <span className="display block mt-1.5 text-stone" style={{ fontSize: 'clamp(0.95rem, 1.7vw, 1.1rem)', fontStyle: 'italic' }}>
+              {CORE.note}
+            </span>
+          </div>
+
           {/* The three lenses named in the teaching */}
-          <ul className="mt-10 grid grid-cols-3 gap-3" aria-label="The three lenses of the teaching">
+          <ul className="mt-3 grid grid-cols-3 gap-3" aria-label="The three lenses of the teaching">
             {LENSES.map((lens, i) => (
               <li key={lens} className="sheet px-3 py-5 text-center" style={{ borderRadius: '20px' }}>
                 <span className="micro-label block mb-2 text-fog" style={{ fontSize: '11px' }}>

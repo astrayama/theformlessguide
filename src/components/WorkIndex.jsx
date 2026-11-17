@@ -8,7 +8,7 @@ import { SPOTIFY_URL, TIKTOK_URL, INSTAGRAM_URL, PINTEREST_URL, JOURNAL_URL } fr
 const DOORS = [
   {
     verb: 'Watch',
-    text: 'Long-form episodes on YouTube, from non-duality to shadow work to the chakras.',
+    text: 'Long-form episodes on YouTube, from non-duality and Buddhism to philosophy, psychology and science.',
     links: [{ label: 'See the teachings', href: '#teachings' }],
   },
   {

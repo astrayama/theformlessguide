@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import MusicFAB from './components/MusicFAB';
 import { SECTIONS } from './library';
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 // Which section sits across the middle of the screen. The header dots and the
 // paper's watercolor tint both follow it.
@@ -77,6 +78,7 @@ export default function App() {
       <MusicFAB />
 
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
